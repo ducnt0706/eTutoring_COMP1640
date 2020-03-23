@@ -1,0 +1,54 @@
+
+/*nav bar*/
+.navbar{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+#logo {
+  padding: 6px 0 0 0;
+}
+#logo h1 {
+  color: #505050;
+  font-family: "Philosopher", sans-serif;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+#logo h1  {
+  color: #555;
+  line-height: 1;
+  display: inline-block;
+  text-decoration: none;
+}
+
+#logo h1  span {
+  color: #71c55d;
+}
+
+
+a{
+    letter-spacing:2px;
+    text-decoration: none;
+}
+
+ul{
+    letter-spacing: 1px;
+}
+
+li {
+    color: #626262;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    line-height: 30px;
+    text-transform: capitalize;
+}
+/*body*/
+.body-container{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+
