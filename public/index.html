@@ -27,8 +27,7 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/login.css" rel="stylesheet">
 
-  <!--REACT component-->
-
+  
 </head>
 
 <body>
@@ -491,9 +490,16 @@
   <!-- Vendor JS Files -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!--Handle function in page-->
-  <script src="controller/index.js"></script>
+  <!--REACT component-->
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
 
+  <!--Render Components-->
+  <script type="text/babel" src="views/index.js"></script>
+  <!--Handle function in page-->
+  <script src="controller/controller.js"></script>
+  
 </body>
 
 </html>
