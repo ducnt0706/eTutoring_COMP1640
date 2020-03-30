@@ -16,12 +16,8 @@ const express= require('express');
 const router=express.Router();
 
 // Login by google api
-router.get('/googlelogin',(req,res)=>{
-    return res.status(200).send('google login is working');
-});
-// Test api
-router.get('/test',(req,res)=>{
-    return res.send({title:"test"});
+router.get('/senddata',(req,res)=>{
+    return res.status(200).send({data:"hello"});
 });
 
 // Export router
