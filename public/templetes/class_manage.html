@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+  <!--My resource!-->
+  <link rel="stylesheet" href="../assets/css/create_class.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <!-- Brand -->
+  <a class="navbar-brand" id="logo" href="#"><h1>e<span>Tutoring</span></h1></a>
+
+  <!-- Links -->
+  <ul class="nav justify-content-end">
+    
+    <!-- Dropdown -->
+    <li class="nav-item dropdown ">
+        <a class="nav-link " href="#" id="navbardrop" data-toggle="dropdown">
+            <i class="fas fa-plus-circle fa-2x"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#myModal">Add new class</a>
+          <a class="dropdown-item" href="#">Join in class</a>
+        </div>
+      </li>
+
+    <!-- Dropdown -->
+    <li class="nav-item dropdown ">
+      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+        avatar
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">Name of user</a>
+        <a class="dropdown-item" href="#">Sign out</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+<br>
+
+<!-- The Modal for create new class -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Adding new class</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+          Modal body..
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+  
+      </div>
+    </div>
+</div>
+  
+<div class="body-container">
+  <div class="row">
+      
+      <div class="col-sm-6 col-md-3">
+        <div class="card" >
+            <img class="card-img-top" src="../assets/img/classvector2.jpg" alt="Card image">
+            <div class="card-body">
+              <h4 class="card-title">John Doe</h4>
+              <p class="card-text">Some example text.</p>
+              <a href="#" class="btn btn-primary">See Profile</a>
+            </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-md-3">
+        <div class="card" >
+            <img class="card-img-top" src="../assets/img/classvector2.jpg" alt="Card image">
+            <div class="card-body">
+              <h4 class="card-title">John Doe</h4>
+              <p class="card-text">Some example text.</p>
+              <a href="#" class="btn btn-primary">See Profile</a>
+            </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-md-3">
+        <div class="card" >
+            <img class="card-img-top" src="../assets/img/classvector2.jpg" alt="Card image">
+            <div class="card-body">
+              <h4 class="card-title">John Doe</h4>
+              <p class="card-text">Some example text.</p>
+              <a href="#" class="btn btn-primary">See Profile</a>
+            </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-md-3">
+        <div class="card" >
+            <img class="card-img-top" src="../assets/img/classvector2.jpg" alt="Card image">
+            <div class="card-body">
+              <h4 class="card-title">John Doe</h4>
+              <p class="card-text">Some example text.</p>
+              <a href="#" class="btn btn-primary">See Profile</a>
+            </div>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+</body>
+</html>

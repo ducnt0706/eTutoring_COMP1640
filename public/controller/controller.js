@@ -11,7 +11,10 @@ function signIn() {
       'login_hint': 'user@gmail.com'
     });
     //
-    firebase.auth().signInWithPopup(provider).catch(function(error) {
+    firebase.auth().signInWithPopup(provider).then(()=>{
+      console.log(firebase.auth().currentUser.displayName);
+      console.log(firebase.auth().currentUser.photoURL);
+    }).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -39,7 +42,9 @@ function isUserSignedIn() {
 // TODO 2: Sign out of Firebase.
 function signOut() {
     // Sign out of Firebase.
-    firebase.auth().signOut();
+    firebase.auth().signOut().then(()=>{
+      console.log('User signed out');
+    });
 }
 
 // TODO 3: Initialize Firebase
@@ -62,28 +67,13 @@ function authStateObserver(user) {
     // Show user's profile and sign-out button.
     userNameElement.removeAttribute('hidden');
     userPicElement.removeAttribute('hidden');
-    signOutButtonElement.removeAttribute('hidden');
-
-    // Hide sign-in button.
-    signInButtonElement.setAttribute('hidden', 'true');
-
-    // We save the Firebase Messaging Device token and enable notifications.
-    saveMessagingDeviceToken();
+    
   } else { // User is signed out!
     // Hide user's profile and sign-out button.
     userNameElement.setAttribute('hidden', 'true');
     userPicElement.setAttribute('hidden', 'true');
-    signOutButtonElement.setAttribute('hidden', 'true');
-
-    // Show sign-in button.
-    signInButtonElement.removeAttribute('hidden');
   }
 }
-
-
-
-
-
 
 
 // TODO: Checks that the Firebase SDK has been correctly setup and configured.
@@ -100,7 +90,8 @@ checkSetup();
 
 //============================== Get element ==========================
 var signInButtonElement = document.getElementById('sign-in');
-
+var userPicElement = document.getElementById('user-pic');
+var userNameElement = document.getElementById('user-name');
 
 
 //============================ Set Event Listener========================
