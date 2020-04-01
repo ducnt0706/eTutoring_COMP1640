@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 
+// TODO: Import components to render:
+import Login from './components/Login';
 
-ReactDOM.render(<App />,document.getElementById('root'));
+// TODO: Render components to index.html
+ReactDOM.render(<Login />,document.getElementById('root'));
 
