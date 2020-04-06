@@ -24,7 +24,6 @@ function initFirebaseAuth() {
       // Set the user's profile pic and name.
       $('#tutor-dashboard-page').show();
       $('#login-page').hide();
-      $('#student-dashboard-page').hide();
 
       // Show user's profile and sign-out button.
       $('#user-name').text(userName);
@@ -32,7 +31,6 @@ function initFirebaseAuth() {
 
     }else{ 
       // User is signed out!
-      $('#student-dashboard-page').hide();
       $('#tutor-dashboard-page').hide();
       $('#login-page').show();
     }
@@ -198,7 +196,7 @@ function tutorDashboardClick(){
   $('#tutor-dashboard-header').show();
 }
 function initialTutorDesign(){
-  getContactByTutor('Cy9gnZjziDVD2Lxq9K9oRtILt1F2');
+  getContactByTutor('EYjCZIaYnIemSOjOGPONPBIFM2g1');
   $('#tutor-contact-card').hide();
 }
 
