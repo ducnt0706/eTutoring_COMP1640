@@ -16,7 +16,7 @@ function signOut() {
 function initFirebaseAuth() {
   firebase.auth().onAuthStateChanged(user => {   
     // Present tutor dashboard 
-    if (user!=null && firebase.auth().currentUser.uid=="EYjCZIaYnIemSOjOGPONPBIFM2g1") { // User is signed in!
+    if (user!=null && firebase.auth().currentUser.uid=="iC8d3oEGkRY7qbjsoiJCJ0mkG5y2") { // User is signed in!
       // Get the signed-in user's profile pic and name.
       var profilePicUrl = getProfilePicUrl();
       userName = getUserName();
