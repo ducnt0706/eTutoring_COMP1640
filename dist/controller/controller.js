@@ -219,4 +219,9 @@ initFirebaseAuth();
 
 initialTutorDesign();
 // Region for tutor
-console.log(userName);
+var ref = new Firebase("https://etutoring-dc0f0.firebaseio.com");
+var authData = ref.getAuth();
+
+if (authData) {
+  console.log("Authenticated user with uid:", authData.uid);
+}
