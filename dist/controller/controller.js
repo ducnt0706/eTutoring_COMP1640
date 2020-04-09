@@ -17,9 +17,10 @@ function initFirebaseAuth() {
   firebase.auth().onAuthStateChanged(user => {
     // Present tutor dashboard 
     if (user != null && firebase.auth().currentUser.uid == "EYjCZIaYnIemSOjOGPONPBIFM2g1") { // User is signed in!
+      
       // Get the signed-in user's profile pic and name.
       var profilePicUrl = getProfilePicUrl();
-      userName = getUserName();
+      var userName = getUserName();
 
       // Set the user's profile pic and name.
       $('#tutor-dashboard-page').show();
@@ -46,17 +47,17 @@ function getProfilePicUrl() {
 function getUserName() {
   return firebase.auth().currentUser.displayName;
 }
-// TODO 6: Return uid of gmail
 
+// TODO 6: Return uid of gmail
 function getUid() {
   return firebase.auth().currentUser.uid;
 }
 
 // TODO 7: Return gmail of user
-
 function getGmail() {
   return firebase.auth().currentUser.email;
 }
+
 // TODO 8: Return true if a user is signed-in.
 function isUserSignedIn() {
   return !!firebase.auth().currentUser;
@@ -71,24 +72,11 @@ function isTutorAccount(uId) {
     }
   });
 }
-// TODO 10 :check if user is student ==>dang bi sai
-function isStudentAccount(uId) {
 
-}
 
 //------------------- End Handle Login! -------------------
 
-// TODO 7: Return contact of student
-function getStudentInfo() {
-
-  firebase.firestore().collection('students').get().then(function (querySnapshot) {
-    querySnapshot.forEach(function (doc) {
-      // doc.data() is never undefined for query doc snapshots       
-      // Render contact interface
-      renderContact(doc);
-    });
-  });
-}
+//======================== Handle student and tutor information- don't need in here==============
 
 // TODO 8: CREATE NEW document of student
 function createStudentInfo() {
@@ -114,22 +102,23 @@ function createTutorInfo() {
     console.log(" Document of tutor successfully written!");
   });
 }
+//======================== Handle student and tutor information- End!==============
 
-//============================================Handle create new contact=============
+//============================================Handle contact=============
 // TODO 10: Create new contact 
-function createContact(tutoruid, studentid) {
-  firebase.firestore().collection('contacts').doc(tutoruid).collection('students').doc(studentid).set({
-    name: "Co be ngoan hien",
-    mssv: "GCH84245",
+function createContact(tutorgmail, studentgmail) {
+  firebase.firestore().collection('tutorcontacts').doc(tutorgmail).collection('students').doc(studentgmail).set({
+    name: "Duc Da Tai",
+    mssv: "GCH41842",
     mobile: "016732184122",
-    gmail: "cobengoanhien@gmail.com"
+    gmail: "ducntgch17377@gmail.com"
   }).then(() => {
     console.log(" Contact Document successfully written!");
   });
 }
 // TODO 11: get contact by tutor id 
-function getContactByTutor(tutoruid) {
-  firebase.firestore().collection('contacts').doc(tutoruid).collection('students').get().then(function (querySnapshot) {
+function getContactByTutor(tutorgmail) {
+  firebase.firestore().collection('tutorcontacts').doc(tutorgmail).collection('students').get().then(function (querySnapshot) {
     querySnapshot.forEach(function (doc) {
       // doc.data() is never undefined for query doc snapshots       
       // Render contact interface
@@ -184,22 +173,23 @@ function renderContact(doc) {
 
 
 }
-//============================================ Handle create new contact End! =============
+//============================================ Handle contact End! =============
 
 //================================Handle meeting funtion==========================
 //TODO: Create new meeting
-function createNewMeeting() {
+function createNewMeeting(meetingid) {
   var meetingDoc = {
-    studentgmail: "kingkonglop1d@gmail.com",
-    name: "Nguyen Ngoc Han",
-    gmail: "hannn@fpt.edu.vn",
-    title: "hop phu huynh",
-    content: "Thong bao tinh hinh hoc tap cua sinh vien",
+    studentgmail: "ducnt0706@gmail.com",
+    studentname:"Nguyen Trung Duc",
+    tutorname: "Nguyen Ngoc Han",
+    tutorgmail: "hannn@fpt.edu.vn",
+    title: "Thong bao vinh danh",
+    content: "Thong bao vinh danh hoc sinh xuat sac nhat ky summer",
     date: "20-04-2020",
     time: "06:30 pm",
     status: true
   }
-  firebase.firestore().collection('meetings').doc('meeting2').set(meetingDoc).then(() => {
+  firebase.firestore().collection('meetings').doc(meetingid).set(meetingDoc).then(() => {
     console.log("Meeting Document successfully written!");
   })
 }
@@ -218,7 +208,7 @@ function renderMeeting(doc) {
         '<div id="tutor-meeting-content" class="col-8 content">'+
           '<h5>'+doc.data().title+'</h5>'+
           '<p>'+doc.data().content + '</p>'+
-          '<p>'+doc.data().name+'<br>'+doc.data().gmail+'</p>'+
+          '<p>'+doc.data().studentname+'<br>'+doc.data().studentgmail+'</p>'+
         '</div>'+
       '</div>'+
     '</div>';
@@ -231,36 +221,50 @@ function renderMeeting(doc) {
 };
 // TODO: present meeting interface from db
 function getMeetingByTutor(tutorgmail) {
-  firebase.firestore().collection('meetings').where("gmail","==",tutorgmail).limit(10).get().then(function (querySnapshot) {
+  firebase.firestore().collection('meetings').where("tutorgmail","==",tutorgmail).limit(10).get().then(function (querySnapshot) {
     querySnapshot.forEach(function (doc) {
       renderMeeting(doc);
     });
   });
 }
 //================================ End Handle meeting funtion !==========================
-//==============================Handlde default setting
+//================================= Handle post function ========================
+// TODO:
+function createNewPost(){
+
+}
+function renderPost(doc){
+
+}
+function getPostByTutor(){
+
+}
+//================================== End post function !========================
+
+
+//==============================Handlde loading interface setting
 function tutorContactClick() {
   $('#tutor-page-header').text("Contacts");
   $('#tutor-dashboard-header').hide();
-
   $('#tutor-contact-card').show();
+  $('#tutor-dashboard-timeline').hide();
 }
 function tutorDashboardClick() {
   $('#tutor-page-header').text("Dashboard");
   $('#tutor-contact-card').hide();
   $('#tutor-dashboard-header').show();
+  $('#tutor-dashboard-timeline').show();
 }
 function initialTutorDesign() {
-  getContactByTutor('EYjCZIaYnIemSOjOGPONPBIFM2g1');
+  getContactByTutor("hannn@fpt.edu.vn");
   getMeetingByTutor("hannn@fpt.edu.vn");
   $('#tutor-contact-card').hide();
 }
-
+//==============================Handlde loading interface setting end!=======================
 
 //=================================== ADD EVENTS ===============================
 
 $('#sign-out').on('click', signOut);
-$('#sign-out2').on('click', signOut);
 $('#sign-in').on('click', signIn);
 
 $('#btn-tutor-contact').on('click', tutorContactClick);
