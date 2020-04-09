@@ -4,23 +4,32 @@ var userName="";
 // TODO 1: Sign in Firebase with credential from the Google user.
 function signIn() {
   var provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider);
+  firebase.auth().signInWithPopup(provider).then(function(result) {
+    var token = result.credential.accessToken;
+    var user = result.user;
+    console.log('User>>Goole>>>>', user);
+    userId = user.uid;
+
+}).catch(function(error) {
+    console.error('Error: hande error here>>>', error.code)
+})
 }
 
 // TODO 2: Sign out of Firebase.
 function signOut() {
-  firebase.auth().signOut();
+  firebase.auth().signOut().then(function() {
+    // Redirect to google sign out.
+    //window.location.assign('https://accounts.google.com/logout');
+  }).catch(function(error) {
+    // Error occurred.
+  })
 }
 
 // TODO 3: Initialize Firebase and Listen user state changes.
 function initFirebaseAuth() {
   firebase.auth().onAuthStateChanged(user => {   
     // Present tutor dashboard 
-<<<<<<< HEAD
-    if (user!=null && firebase.auth().currentUser.uid=="OWDQX2WwEZVVISbjV8z73FbRUXs2") { // User is signed in!
-=======
-    if (user!=null && firebase.auth().currentUser.uid=="iC8d3oEGkRY7qbjsoiJCJ0mkG5y2") { // User is signed in!
->>>>>>> toan update
+    if (user!=null ) { // User is signed in!
       // Get the signed-in user's profile pic and name.
       var profilePicUrl = getProfilePicUrl();
       userName = getUserName();
@@ -33,12 +42,21 @@ function initFirebaseAuth() {
       $('#user-name').text(userName);
       $('#user-avatar').attr('src',profilePicUrl);
 
+      //show list Tutor & list Student 
+
+
+      
+
     }else{ 
       // User is signed out!
       $('#tutor-dashboard-page').hide();
       $('#login-page').show();
     }
   });
+}
+
+assignToturWithStudent=()=>{
+
 }
 
 // TODO 4: Return the user's profile pic URL.
@@ -85,39 +103,40 @@ function isStudentAccount(uId){
 // TODO 7: Return contact of student
 function getStudentInfo(){
   
-  firebase.firestore().collection('students').get().then(function(querySnapshot) {
+  firebase.firestore().collection('listStudent').get().then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
         // doc.data() is never undefined for query doc snapshots       
         // Render contact interface
-        renderContact(doc);
+        // renderContact(doc);
+        console.log(doc.name)
     });
 });
 }
 
-// TODO 8: CREATE NEW document of student
-function createStudentInfo(){
-  //Note: If want to user auto ID just use doc();
-  firebase.firestore().collection('students').doc('AkK6ZIFjjnPP8VB40rKoKlYKOJi1').set({
-    name:"Duc Dap Chai",
-    mssv:"GCH1745",
-    moblie:"038147",
-    gmail:"abc@gmail.com"
-  }).then(()=>{
-    console.log("Document successfully written!");
-  });
-}
+// // TODO 8: CREATE NEW document of student
+// function createStudentInfo(){
+//   //Note: If want to user auto ID just use doc();
+//   firebase.firestore().collection('students').doc('AkK6ZIFjjnPP8VB40rKoKlYKOJi1').set({
+//     name:"Duc Dap Chai",
+//     mssv:"GCH1745",
+//     moblie:"038147",
+//     gmail:"abc@gmail.com"
+//   }).then(()=>{
+//     console.log("Document successfully written!");
+//   });
+// }
 
 //TODO 9: CREATE NEW document of tutor info
-function createTutorInfo(){
-  //Note: If want to user auto ID just use doc();
-  // To update new property do the same with set({new property},{merge:true})
-  db.collection('tutors').doc('').set({
-    name:"Name of tutor",
-    gmail:"abc@gmail.com"
-  }).then(()=>{
-    console.log(" Document of tutor successfully written!");
-  });
-}
+// function createTutorInfo(){
+//   //Note: If want to user auto ID just use doc();
+//   // To update new property do the same with set({new property},{merge:true})
+//   db.collection('tutors').doc('').set({
+//     name:"Name of tutor",
+//     gmail:"abc@gmail.com"
+//   }).then(()=>{
+//     console.log(" Document of tutor successfully written!");
+//   });
+// }
 
 // TODO 10: Create new contact 
 function createContact(tutoruid,studentid) {
@@ -137,6 +156,16 @@ function getContactByTutor(tutoruid){
         // doc.data() is never undefined for query doc snapshots       
         // Render contact interface
         renderContact(doc);
+        console.log('data1:',doc.data())
+    });
+});
+}
+
+function getStudent(){
+  firebase.firestore().collection('listStudent').get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+        //renderContact(doc);
+        console.log('data:',doc.data())
     });
 });
 }
@@ -190,8 +219,8 @@ function renderContact(doc) {
 
 function tutorContactClick(){
   $('#tutor-page-header').text("Contacts");
-  $('#tutor-dashboard-header').hide();
-  
+  $('#tutor-dashboard-header').hide(); 
+  $('#dashboard-infor').hide();
   $('#tutor-contact-card').show();
 }
 function tutorDashboardClick(){
@@ -220,7 +249,7 @@ $('#btn-tutor-dashboard').on('click', tutorDashboardClick);
 // Listen user state changes
 initFirebaseAuth();
 
-
+getStudent()
 initialTutorDesign();
 // Region for tutor
 console.log();
