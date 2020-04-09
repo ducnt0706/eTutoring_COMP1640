@@ -108,10 +108,10 @@ function createTutorInfo() {
 // TODO 10: Create new contact 
 function createContact(tutorgmail, studentgmail) {
   firebase.firestore().collection('tutorcontacts').doc(tutorgmail).collection('students').doc(studentgmail).set({
-    name: "Duc Da Tai",
-    mssv: "GCH41842",
-    mobile: "016732184122",
-    gmail: "ducntgch17377@gmail.com"
+    name: "Co be hat hay",
+    mssv: "GBH18362",
+    mobile: "0168266371",
+    gmail: "cobenhonhan124277@gmail.com"
   }).then(() => {
     console.log(" Contact Document successfully written!");
   });
@@ -179,14 +179,14 @@ function renderContact(doc) {
 //TODO: Create new meeting
 function createNewMeeting(meetingid) {
   var meetingDoc = {
-    studentgmail: "ducnt0706@gmail.com",
-    studentname:"Nguyen Trung Duc",
+    studentgmail: "tuabc@gmail.com",
+    studentname:"Chu Cam Tu",
     tutorname: "Nguyen Ngoc Han",
     tutorgmail: "hannn@fpt.edu.vn",
-    title: "Thong bao vinh danh",
-    content: "Thong bao vinh danh hoc sinh xuat sac nhat ky summer",
-    date: "20-04-2020",
-    time: "06:30 pm",
+    title: "Thong bao ket hon",
+    content: "Thong bao vinh danh hoc sinh xuat ket voi chang trai song lam",
+    date: "25-04-2020",
+    time: "09:00 am",
     status: true
   }
   firebase.firestore().collection('meetings').doc(meetingid).set(meetingDoc).then(() => {
@@ -216,7 +216,7 @@ function renderMeeting(doc) {
   $('#tutor-meeting-box').append(meetingItem);
   // Change status of meeting
   if(doc.data().status==true){
-    $('#tutor-meeting-status').attr("class","icon bg-success");
+    $('#tutor-meeting-status').attr("background-color","#3cb371");
   };
 };
 // TODO: present meeting interface from db
@@ -279,3 +279,5 @@ initFirebaseAuth();
 
 initialTutorDesign();
 // Region for tutor
+//createNewMeeting("meeting3");
+//createContact( "hannn@fpt.edu.vn","cobenhonhan@gmail.com");
