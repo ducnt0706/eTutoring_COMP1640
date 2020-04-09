@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "etutoring-dc0f0"
+    "default": "etutoring-dc0f0",
+    "student": "etutoring-dc0f0"
   }
 }
