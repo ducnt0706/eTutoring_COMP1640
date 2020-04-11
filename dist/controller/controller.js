@@ -231,10 +231,21 @@ function getMeetingByTutor(tutorgmail) {
 //================================= Handle post function ========================
 // TODO:
 function createNewPost(){
-
+  var post={
+    tutorgmail:"",
+    tutorname:"",
+    tutoravatar:"",
+    fileurl:"",
+    time:firebase.firestore.FieldValue.serverTimestamp(),
+    content:"Hello anh em!",
+    love:50
+  };
+  firestore.collection('posts').add(post).then(() => {
+    console.log("Post Document successfully written!");
+  });
 }
 function renderPost(doc){
-
+  
 }
 function getPostByTutor(){
 

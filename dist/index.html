@@ -203,7 +203,7 @@
             <div class="container-fluid">
               <div class="row bg-white has-shadow">
 
-                <!-- Item -->
+                <!-- Item - To add new post -->
                 <div class="col-xl-3 col-sm-6">
                   <div class="item d-flex align-items-center">
                     <!-- Button to create new post -->
@@ -221,7 +221,10 @@
 
                           <!-- Modal body -->
                           <div class="modal-body">
-                            Modal body..
+                            <form id="create-new-post" style="text-align:center;">
+                              <input type="text" name="content" placeholder="What is your mind?"><br>
+                              <button type="button" class="btn btn-warning" >Post</button>
+                            </form>
                           </div>
 
                           <!-- Modal footer -->
@@ -320,9 +323,10 @@
                       </div>
                     </div>
                     <div class="card-header">
-                      <h3 class="h4">Daily Feeds</h3>
+                      <h3 class="h4">Daily Posts</h3>
                     </div>
-                    <div class="card-body no-padding">
+
+                    <div id="tutor-post-box" class="card-body no-padding">
 
                       <!-- Item-->
                       <div class="item">
@@ -365,6 +369,7 @@
                       </div>
                       
                     </div>
+
                   </div>
                 </div>
                 <!-- Recent Activities -->
