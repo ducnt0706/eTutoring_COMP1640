@@ -15,9 +15,10 @@ function signOut() {
 // TODO 3: Initialize Firebase and Listen user state changes.
 function initFirebaseAuth() {
   firebase.auth().onAuthStateChanged(user => {
+
     // Present tutor dashboard 
     if (user != null && firebase.auth().currentUser.uid == "EYjCZIaYnIemSOjOGPONPBIFM2g1") { // User is signed in!
-      
+
       // Get the signed-in user's profile pic and name.
       var profilePicUrl = getProfilePicUrl();
       var userName = getUserName();
@@ -29,7 +30,7 @@ function initFirebaseAuth() {
       // Show user's profile and sign-out button.
       $('#user-name').text(userName);
       $('#user-avatar').attr('src', profilePicUrl);
-
+      
     } else {
       // User is signed out!
       $('#tutor-dashboard-page').hide();
@@ -180,7 +181,7 @@ function renderContact(doc) {
 function createNewMeeting(meetingid) {
   var meetingDoc = {
     studentgmail: "tuabc@gmail.com",
-    studentname:"Chu Cam Tu",
+    studentname: "Chu Cam Tu",
     tutorname: "Nguyen Ngoc Han",
     tutorgmail: "hannn@fpt.edu.vn",
     title: "Thong bao ket hon",
@@ -196,32 +197,32 @@ function createNewMeeting(meetingid) {
 // TODO: render meeting interface
 function renderMeeting(doc) {
   var meetingItem =
-    '<div class="item">'+
-      '<div class="row">'+
-        '<div class="col-4 date-holder text-right ">'+
-          '<div id="tutor-meeting-status" class="icon"><i class="fa fa-check "></i></div>'+
-          '<div class="date">'+
-            '<h5>'+doc.data().time+'</h5>'+
-            '<h7 class="text-info">'+doc.data().date+'</h7>'+
-          '</div>'+
-        '</div>'+
-        '<div id="tutor-meeting-content" class="col-8 content">'+
-          '<h5>'+doc.data().title+'</h5>'+
-          '<p>'+doc.data().content + '</p>'+
-          '<p>'+doc.data().studentname+'<br>'+doc.data().studentgmail+'</p>'+
-        '</div>'+
-      '</div>'+
+    '<div class="item">' +
+    '<div class="row">' +
+    '<div class="col-4 date-holder text-right ">' +
+    '<div id="tutor-meeting-status" class="icon"><i class="fa fa-check "></i></div>' +
+    '<div class="date">' +
+    '<h5>' + doc.data().time + '</h5>' +
+    '<h7 class="text-info">' + doc.data().date + '</h7>' +
+    '</div>' +
+    '</div>' +
+    '<div id="tutor-meeting-content" class="col-8 content">' +
+    '<h5>' + doc.data().title + '</h5>' +
+    '<p>' + doc.data().content + '</p>' +
+    '<p>' + doc.data().studentname + '<br>' + doc.data().studentgmail + '</p>' +
+    '</div>' +
+    '</div>' +
     '</div>';
 
   $('#tutor-meeting-box').append(meetingItem);
   // Change status of meeting
-  if(doc.data().status==true){
-    $('#tutor-meeting-status').attr("background-color","#3cb371");
+  if (doc.data().status == true) {
+    $('#tutor-meeting-status').attr("background-color", "#3cb371");
   };
 };
 // TODO: present meeting interface from db
 function getMeetingByTutor(tutorgmail) {
-  firebase.firestore().collection('meetings').where("tutorgmail","==",tutorgmail).limit(10).get().then(function (querySnapshot) {
+  firebase.firestore().collection('meetings').where("tutorgmail", "==", tutorgmail).limit(10).get().then(function (querySnapshot) {
     querySnapshot.forEach(function (doc) {
       renderMeeting(doc);
     });
@@ -230,24 +231,25 @@ function getMeetingByTutor(tutorgmail) {
 //================================ End Handle meeting funtion !==========================
 //================================= Handle post function ========================
 // TODO:
-function createNewPost(){
-  var post={
-    tutorgmail:"",
-    tutorname:"",
-    tutoravatar:"",
-    fileurl:"",
-    time:firebase.firestore.FieldValue.serverTimestamp(),
-    content:"Hello anh em!",
-    love:50
+function createNewPost() {
+  const form = document.querySelector('#create-new-post');
+  var post = {
+    tutorgmail: "hannn@fpt.edu.vn",
+    tutorname: "Han Nguyen Ngoc",
+    tutorPictureurl: "pictureid.url",
+    fileurl: "pictureid.url",
+    content: form.content.value,
+    time: firebase.firestore.FieldValue.serverTimestamp(),
+    loves: 0
   };
-  firestore.collection('posts').add(post).then(() => {
+  firebase.firestore().collection('posts').add(post).then(() => {
     console.log("Post Document successfully written!");
   });
 }
-function renderPost(doc){
-  
+function renderPost(doc) {
+
 }
-function getPostByTutor(){
+function getPostByTutor() {
 
 }
 //================================== End post function !========================
@@ -272,14 +274,19 @@ function initialTutorDesign() {
   $('#tutor-contact-card').hide();
 }
 //==============================Handlde loading interface setting end!=======================
-
-//=================================== ADD EVENTS ===============================
-
+//=================================== EVENTS WHEN USER INTERRACT WITH SYSTEm ===============================
 $('#sign-out').on('click', signOut);
 $('#sign-in').on('click', signIn);
 
 $('#btn-tutor-contact').on('click', tutorContactClick);
 $('#btn-tutor-dashboard').on('click', tutorDashboardClick);
+
+//create post event
+$("#postSubmit").on('click', () => {
+  $("#create-new-post").submit();
+});
+$("#create-new-post").submit(createNewPost);
+
 // Region for admin
 
 // Set up initial
@@ -292,3 +299,4 @@ initialTutorDesign();
 // Region for tutor
 //createNewMeeting("meeting3");
 //createContact( "hannn@fpt.edu.vn","cobenhonhan@gmail.com");
+//createNewPost("mypost","hannn@fpt.edu.vn","Han Nguyen Ngoc","ancancanc.com","dlaaknckac.com","Hello World",69);
