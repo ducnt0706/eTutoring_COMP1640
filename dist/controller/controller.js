@@ -30,6 +30,9 @@ function initFirebaseAuth() {
       // Show user's profile and sign-out button.
       $('#user-name').text(userName);
       $('#user-avatar').attr('src', profilePicUrl);
+
+      // Region for loading Post, meeting, contact
+      loadPostByTutorGmail(getGmail());
       
     } else {
       // User is signed out!
@@ -63,6 +66,7 @@ function getGmail() {
 function isUserSignedIn() {
   return !!firebase.auth().currentUser;
 }
+
 // TODO 9: check if user is tutor ==>dang bi sai
 function isTutorAccount(uId) {
   firebase.firestore().collection('tutors').doc(uId).get().then((docSnapshot) => {
@@ -221,8 +225,8 @@ function renderMeeting(doc) {
   };
 };
 // TODO: present meeting interface from db
-function getMeetingByTutor(tutorgmail) {
-  firebase.firestore().collection('meetings').where("tutorgmail", "==", tutorgmail).limit(10).get().then(function (querySnapshot) {
+function getMeetingByTutor(tutorGmail) {
+  firebase.firestore().collection('meetings').where("tutorgmail", "==", tutorGmail).limit(10).get().then(function (querySnapshot) {
     querySnapshot.forEach(function (doc) {
       renderMeeting(doc);
     });
@@ -234,23 +238,40 @@ function getMeetingByTutor(tutorgmail) {
 function createNewPost() {
   const form = document.querySelector('#create-new-post');
   var post = {
-    tutorgmail: "hannn@fpt.edu.vn",
-    tutorname: "Han Nguyen Ngoc",
-    tutorPictureurl: "pictureid.url",
+    tutorgmail: getGmail(),
+    tutorname: getUserName(),
+    tutorPictureurl: getProfilePicUrl(),
     fileurl: "pictureid.url",
     content: form.content.value,
     time: firebase.firestore.FieldValue.serverTimestamp(),
     loves: 0
   };
-  firebase.firestore().collection('posts').add(post).then(() => {
-    console.log("Post Document successfully written!");
-  });
+  return firebase.firestore().collection('posts').add(post).catch((error)=>{
+    console.log("Error make new post",error);
+  })
 }
 function renderPost(doc) {
-
+  
 }
-function getPostByTutor() {
-
+function loadPostByTutorGmail(tutorGmail) {
+  var query=firebase.firestore()
+              .collection('posts')
+              .where("tutorgmail", "==", tutorGmail)
+              .limit(10);
+  query.onSnapshot((snapshot)=>{
+    snapshot.forEach((doc)=>{
+      renderPost(doc);
+    })
+  });
+}
+//=================================== For testing ======================
+function loadWhenSignedIn(){
+  if(isUserSignedIn()){
+    var tutorgmail=getGmail();
+    loadPostByTutorGmail("ducntgch17377@fpt.edu.vn");
+    return true;
+  }
+  return false;
 }
 //================================== End post function !========================
 
@@ -281,7 +302,7 @@ $('#sign-in').on('click', signIn);
 $('#btn-tutor-contact').on('click', tutorContactClick);
 $('#btn-tutor-dashboard').on('click', tutorDashboardClick);
 
-//create post event
+//create post event ===> can xu ly lai
 $("#postSubmit").on('click', () => {
   $("#create-new-post").submit();
 });
@@ -300,3 +321,4 @@ initialTutorDesign();
 //createNewMeeting("meeting3");
 //createContact( "hannn@fpt.edu.vn","cobenhonhan@gmail.com");
 //createNewPost("mypost","hannn@fpt.edu.vn","Han Nguyen Ngoc","ancancanc.com","dlaaknckac.com","Hello World",69);
+
