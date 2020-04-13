@@ -33,7 +33,8 @@ function initFirebaseAuth() {
 
       // Region for loading Post, meeting, contact
       loadPostByTutorGmail(getGmail());
-      
+      getContactByTutor("hannn@fpt.edu.vn");
+      getMeetingByTutor("hannn@fpt.edu.vn");
     } else {
       // User is signed out!
       $('#tutor-dashboard-page').hide();
@@ -241,33 +242,56 @@ function createNewPost() {
     tutorgmail: getGmail(),
     tutorname: getUserName(),
     tutorPictureurl: getProfilePicUrl(),
-    fileurl: "pictureid.url",
+    fileurl: "img/hotgirl1.jpg",
     content: form.content.value,
     time: firebase.firestore.FieldValue.serverTimestamp(),
     loves: 0
   };
-  return firebase.firestore().collection('posts').add(post).catch((error)=>{
-    console.log("Error make new post",error);
+  return firebase.firestore().collection('posts').add(post).catch((error) => {
+    console.log("Error make new post", error);
   })
 }
 function renderPost(doc) {
-  
+  var postItem =
+    '<div class="item">' +
+    '<div class="feed d-flex justify-content-between">' +
+    '<div class="feed-body d-flex justify-content-between">' +
+    '<span class="feed-profile">' +
+    '<img src="' + doc.data().tutorPictureurl + '" alt="person" class="img-fluid rounded-circle">' +
+    '</span>' +
+    '<div class="content">' +
+    '<h5>' + doc.data().tutorname + '</h5>' +
+    '<div class="full-date"><small>' + doc.data().time.toDate()+ '</small></div>' +
+    '<hr>' +
+    '<p>' + doc.data().content + '</p>' +
+    '<img src="' + doc.data().fileurl + '" alt="Photo.." class="img-fluid">' +
+    '<div class="CTAs">' +
+    '<button class="btn btn-xs btn-secondary"> <i class="fa fa-heart"></i> Love</button>' +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '</div>';
+
+
+  $('#tutor-post-box').append(postItem);
+
 }
 function loadPostByTutorGmail(tutorGmail) {
-  var query=firebase.firestore()
-              .collection('posts')
-              .where("tutorgmail", "==", tutorGmail)
-              .limit(10);
-  query.onSnapshot((snapshot)=>{
-    snapshot.forEach((doc)=>{
+  var query = firebase.firestore()
+    .collection('posts')
+    .where("tutorgmail", "==", tutorGmail)
+    .limit(10);
+  query.onSnapshot((snapshot) => {
+    snapshot.forEach((doc) => {
       renderPost(doc);
     })
   });
 }
 //=================================== For testing ======================
-function loadWhenSignedIn(){
-  if(isUserSignedIn()){
-    var tutorgmail=getGmail();
+function loadWhenSignedIn() {
+  if (isUserSignedIn()) {
+    var tutorgmail = getGmail();
     loadPostByTutorGmail("ducntgch17377@fpt.edu.vn");
     return true;
   }
@@ -290,8 +314,7 @@ function tutorDashboardClick() {
   $('#tutor-dashboard-timeline').show();
 }
 function initialTutorDesign() {
-  getContactByTutor("hannn@fpt.edu.vn");
-  getMeetingByTutor("hannn@fpt.edu.vn");
+
   $('#tutor-contact-card').hide();
 }
 //==============================Handlde loading interface setting end!=======================

@@ -223,6 +223,7 @@
                           <div class="modal-body">
                             <form id="create-new-post" style="text-align:center;">
                               <input type="text" name="content" placeholder="What is your mind?"><br>
+                              <input id="mediaInputPost" type="file" accept="image/*" capture><br>
                               <button id="postSubmit" type="button" class="btn btn-warning" >Post</button>
                             </form>
                           </div>
@@ -313,41 +314,26 @@
                 <!-- Daily Feeds -->
                 <div class="col-lg-8">
                   <div class="daily-feeds card">
+                    <!--Card Close-->
                     <div class="card-close">
                       <div class="dropdown">
                         <button type="button" id="closeCard7" data-toggle="dropdown" aria-haspopup="true"
                           aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
                         <div aria-labelledby="closeCard7" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#"
                             class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#"
-                            class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                            class="dropdown-item edit"> <i class="fa fa-gear"></i>Delete</a></div>
                       </div>
                     </div>
+                    <!--Card Header-->
                     <div class="card-header">
                       <h3 class="h4">Daily Posts</h3>
                     </div>
-
+                    <!--Card Body-->
                     <div id="tutor-post-box" class="card-body no-padding">
 
-                      <!-- Item-->
-                      <div class="item">
-                        <div class="feed d-flex justify-content-between">
-                          <div class="feed-body d-flex justify-content-between"><a href="#" class="feed-profile"><img
-                                src="img/avatar-2.jpg" alt="person" class="img-fluid rounded-circle"></a>
-                            <div class="content">
-                              <h5>Frank Williams</h5>
-                              <div class="full-date"><small>Today 5:60 pm - 12.06.2014</small></div>
-                              <hr>
-                              <p>This is my wife! she has a bautiful nose, she is red, she is tester</p>
-                              <img src="img/avatar-3.jpg" alt="Photo.." class="img-fluid">
-                              <div class="CTAs">
-                                <button class="btn btn-xs btn-secondary"> <i class="fa fa-heart"></i> Love</button>
-                              </div>
-                            </div>
-                          </div>
+                      <!-- Item Post-->
 
-                        </div>
-                      </div>
-                      <!-- Item-->
+                      <!-- Item Comment-->
                       <div class="item clearfix">
                         <div class="feed d-flex justify-content-between">
                           <div class="feed-body d-flex justify-content-between">
