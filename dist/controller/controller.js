@@ -1,16 +1,6 @@
 //================================ FUNCTIONS =================================
 
 //------------------- Handle Login -------------------
-// TODO 1: Sign in Firebase with credential from the Google user.
-function signIn() {
-  var provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider);
-}
-
-// TODO 2: Sign out of Firebase.
-function signOut() {
-  firebase.auth().signOut();
-}
 
 // TODO 3: Initialize Firebase and Listen user state changes.
 function initFirebaseAuth() {
@@ -42,7 +32,16 @@ function initFirebaseAuth() {
     }
   });
 }
+// TODO 1: Sign in Firebase with credential from the Google user.
+function signIn() {
+  var provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(provider);
+}
 
+// TODO 2: Sign out of Firebase.
+function signOut() {
+  firebase.auth().signOut();
+}
 // TODO 4: Return the user's profile pic URL.
 function getProfilePicUrl() {
   return firebase.auth().currentUser.photoURL || '/img/avatar-9.jpg';
@@ -317,13 +316,8 @@ function loadPostByTutorGmail(tutorGmail) {
   });
 }
 //=================================== For testing ======================
-function loadWhenSignedIn() {
-  if (isUserSignedIn()) {
-    var tutorgmail = getGmail();
-    loadPostByTutorGmail("ducntgch17377@fpt.edu.vn");
-    return true;
-  }
-  return false;
+function loadWhenSignedIn(tutorgmail) {
+  getMeetingByTutor(tutorgmail);
 }
 //================================== End post function !========================
 
@@ -371,10 +365,10 @@ $('#meetingSubmit').on('click',onMeetingSubmit);
 // Set up initial
 
 // Listen user state changes
+
 initFirebaseAuth();
-
-
 initialTutorDesign();
+
 // Region for tutor
 //createNewMeeting("meeting3");
 //createContact( "hannn@fpt.edu.vn","cobenhonhan@gmail.com");
