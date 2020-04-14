@@ -178,13 +178,14 @@
             <p>Tutor</p>
           </div>
         </div>
-        <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
+         <!-- Sidebar Navidation Menus--> 
+         <span class="heading">Main</span>
         <ul class="list-unstyled">
           <li id="btn-tutor-dashboard" style="cursor: pointer;"><a><i class="icon-home"></i>Dashboard </a></li>
-        </ul><span class="heading">Extras</span>
+        </ul><span class="heading">Extras</span> 
         <ul class="list-unstyled">        
-          <li  style="cursor: pointer;" ><a id="btn-tutor-contact"><i class="icon-mail"></i>Contacts</a></li>
-          <li  style="cursor: pointer;"><a id="btn-tutor-about"><i class="icon-flask"></i>About </a></li>
+          <li  style="cursor: pointer;" ><a id="btn-tutor-contact"><i class="icon-mail"></i>AssignStudent&Totur</a></li>
+          <li  style="cursor: pointer;"><a id="btn-tutor-listAssign"><i class="icon-flask"></i> ListOfAssign </a></li>
         </ul>
       </nav>
     
@@ -271,31 +272,40 @@
             </div>
           </section>
 
-          <!-- Assing Student with totur -->
+          <!-- Assigning Student with totur -->
           <div id = "form-assign">
             <div class="row">
               <div class="col">
-                <input type="text" class="form-control" placeholder="Email of Totur" id = "Email1">
+                <!-- <input type="text" class="form-control" placeholder="Email of Totur" id = "Email1"> -->
+                <input list="browsers1" name="browser" id="Email1" class="form-control"  placeholder="Email of Totur">
+                <datalist id="browsers1">
+                  <div id="options-Totur"></div>
+                </datalist>
               </div>
               <div class="col">
-                <input type="text" class="form-control" placeholder="Email of Student" id = "Email2">
+                <!-- <input type="text" class="form-control" placeholder="Email of Student" id = "Email2"> -->
+                <input list="browsers" name="browser" id="Email2" class="form-control"  placeholder="Email of Student">
+                <datalist id="browsers">
+                  <div id="options-Stu"></div>
+                </datalist>
               </div>
+              
             </div> 
             <br/>
-            <button type="submit" class="btn btn-primary" id="submit">Assign</button>
+            <button type="submit" class="btn btn-primary" id="assign">Assign</button>
             <br/>
             <br/>
             <div class="row">
               <div class="col">
                 <h1 class="text-primary">Totur</h1>
                 <ul class="list-group" >
-                  <li id = "listTotur"></li>
+                  <div id = "listTotur"></div>
                 </ul>
               </div>
               <div class="col">
                 <h1 class="text-primary"> Students have no support</h1>
                 <ul class="list-group">
-                  <li id = "listStudent"></li>
+                  <div id = "listStudent"></div>
                 </ul>
               </div>
             </div>

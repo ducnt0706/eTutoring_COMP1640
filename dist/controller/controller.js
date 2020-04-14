@@ -1,5 +1,5 @@
 //================================ FUNCTIONS =================================
-var userName = "";
+
 //------------------- Handle Login -------------------
 // TODO 1: Sign in Firebase with credential from the Google user.
 function signIn() {
@@ -100,18 +100,6 @@ function isStudentAccount(uId) {
 
 //------------------- End Handle Login! -------------------
 
-// TODO 7: Return contact of student
-function getStudentInfo() {
-
-  firebase.firestore().collection('listStudent').get().then(function (querySnapshot) {
-    querySnapshot.forEach(function (doc) {
-      // doc.data() is never undefined for query doc snapshots       
-      // Render contact interface
-      // renderContact(doc);
-      //console.log(doc.name)
-    });
-  });
-}
 
 // // TODO 8: CREATE NEW document of student
 // function createStudentInfo(){
@@ -162,119 +150,124 @@ function getContactByTutor(tutoruid) {
   });
 }
 
+
+
+
+
+// TODO 12: render contact interface
+
+
+
+//get list students from server
+
+var arrayStu = []
 function getStudent() {
+  $("#listStudent").empty();
+  $("#options-Stu").empty();
+
   firebase.firestore().collection('listStudent').get().then(function (querySnapshot) {
     querySnapshot.forEach(function (doc) {
-    console.log('data:', doc.data())
     if(doc.data().supported === "no"){
-      //renderStudent(doc)
+      renderStudent(doc.data())
+      renderOptionStu(doc.data())
+      arrayStu.push(doc.data())
     }
     });
-
-
   });
 }
+//renderList Student
+renderStudent=(stu)=>{
+  var student = `
+  <li class="list-group-item">Name1:  ${stu.name} </li>
+  <li class="list-group-item">Email: ${stu.email}</li>  
+  <br/>
+  `
+  $('#listStudent').append(student);
+}
 
-var ListStudentShow= [],
-var ListToturShow= [],
+renderOptionStu = (stu)=>{
+  var op = 
+  `
+  <option value=${stu.email}>
+  `
+  $('#options-Stu').append(op);
+
+}
+
+
+//get ListTotur data from sever
 
 function getToturs() {
+  $("#listTotur").empty();
+   $('#options-Totur').empty();
   firebase.firestore().collection('listTutor').get().then(function (querySnapshot) {
     querySnapshot.forEach(function (doc) {
-      console.log('totur',doc.data())
-      // renderTotur(doc)
-      ListToturShow.push(doc)
+     renderTotur(doc.data())
+     renderOptionTotor(doc.data())
     });
   });
-  ListToturShow.forEach((item)=>renderTotur(item))
 }
+//render each Totur 
+renderTotur=(stu)=>{
+  var tt = `
+  <li class="list-group-item">Name:  ${stu.name} </li>
+  <li class="list-group-item">Email: ${stu.email}</li>  
+  <br/>
+  `
+  $('#listTotur').append(tt);
+}
+
+renderOptionTotor = (stu)=>{
+  var op = 
+  `
+  <option value=${stu.email}>
+  `
+  $('#options-Totur').append(op);
+
+}
+// assign stu vs totur
 
 function assignStuWithTotur (){
   var emailTotur = document.getElementById('Email1').value
   var emailStudent = document.getElementById('Email2').value
 
-  console.log(txt1)
-  alert(txt1)
+  //update student 
+  firebase.firestore().collection('listStudent').doc(`${emailStudent}`)
+  .update({
+    "supported":`${emailTotur}` , 
+  })
+  .then(function() {
+      console.log("Student update successfully !!");
+  });
+  //update Assign of Totur
+      var stu =  arrayStu.find((stu)=> stu.email === emailStudent)
+      firebase.firestore().collection('ListAssignOfTotur').doc(`${emailTotur}`).collection(`${emailTotur}`)
+      .add({
+          email:`${emailStudent}`,
+          name: stu.name
+      })
+      .then(function(docRef) {
+          console.log("Document written with ID: ", docRef.id);
+      })
+      .catch(function(error) {
+          console.error("Error adding document: ", error);
+      });
 
-}
-// TODO 12: render contact interface
-function renderContact(doc) {
-
-  var studentcontact =
-    '<div class="col-lg-4 student-contact">' +
-    '<div class="client card">' +
-
-    '<div class="card-close">' +
-    '<div class="dropdown">' +
-    '<button type="button" id="closeCard2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle">' +
-    '<i class="fa fa-ellipsis-v"></i>' +
-    '</button>' +
-    '<div aria-labelledby="closeCard2" class="dropdown-menu dropdown-menu-right has-shadow">' +
-    '<a class="dropdown-item remove"><i class="fa fa-times"></i>Close</a>' +
-    '<a class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a>' +
-    '</div>' +
-    '</div>' +
-    '</div>' +
-
-    '<div class="card-body text-center">' +
-    '<div class="client-avatar"><img src="img/avatar-2.jpg" alt="..." class="img-fluid rounded-circle">' +
-    '<div class="status bg-green"></div>' +
-    '</div>' +
-    '<div class="client-title">' +
-    '<h3>' + doc.data().name + '</h3>' +
-    '<h3>' + doc.data().mssv + '</h3>' +
-    '<a href="#">Message</a>' +
-    '</div>' +
-    '<div class="client-info">' +
-    '<div class="row">' +
-    '<div class="col-6"><strong>Mobile</strong><br><small>' + doc.data().mobile + '</small></div>' +
-    '<div class="col-6"><strong>Gmail</strong><br><small>' + doc.data().gmail + '</small></div>' +
-    '</div>' +
-    '</div>' +
-    '<div class="row d-flex justify-content-between">' +
-    '<div class="col-6"><i class="fa fa-phone"></i></div>' +
-    '<div class="col-6"><i class="fa fa-google-plus"></i></div>' +
-    '</div>' +
-    '</div>' +
-    '</div>' +
-    '</div>';
-
-    var list = 
-    `
-    `
-
-  $('#tutor-row-contact').append(studentcontact);
-
-
-
-}
-//get ListTotur data
-
-//render each Totur 
-renderTotur=(doc)=>{
-  var totur = `
-  <li class="list-group-item">Name:  ${doc.data().name} </li>
-  <li class="list-group-item">Email: ${doc.data().email}</li>
-  <br/>
-  `
-  $('#listTotur').append(totur);
+     document.getElementById('Email1').value = ""
+     document.getElementById('Email2').value = ""
+      getStudent()
+ 
 
 }
 
-renderStudent=(doc)=>{
-  var student = `
-  <li class="list-group-item">Name:  ${doc.data().name} </li>
-  <li class="list-group-item">Email: ${doc.data().email}</li>  <br/>
-  `
-  $('#listStudent').append(student);
 
-}
 
 
 function tutorContactClick() {
   getToturs();
   getStudent();
-  $('#tutor-page-header').text("Contacts");
+  
+  $('#tutor-page-header').text("AssingStudent&Totur");
   $('#tutor-dashboard-header').hide();
   $('#dashboard-infor').hide();
   $('#tutor-contact-card').show();
@@ -287,6 +280,7 @@ function tutorDashboardClick() {
   $('#tutor-contact-card').hide();
   $('#tutor-dashboard-header').show();
   $('#form-assign').hide();
+  $('#dashboard-infor').show();
 
 
 }
@@ -298,6 +292,13 @@ function initialTutorDesign() {
   $('#form-assign').hide();
 
 }
+function clickListAssing(){
+  $('#tutor-page-header').text("ListOfAssigns");
+  $('#tutor-dashboard-header').hide();
+  $('#dashboard-infor').hide();
+  $('#tutor-contact-card').hide();
+  $('#form-assign').hide()
+}
 
 //=================================== ADD EVENTS ===============================
 
@@ -307,7 +308,9 @@ $('#sign-in').on('click', signIn);
 
 $('#btn-tutor-contact').on('click', tutorContactClick);
 $('#btn-tutor-dashboard').on('click', tutorDashboardClick);
-$('#submit').on('click', testEx);
+$('#btn-tutor-listAssign').on('click', clickListAssing);
+
+// $('#assign').on('click', assignStuWithTotur);
 
 // Region for admin
 
@@ -315,9 +318,8 @@ $('#submit').on('click', testEx);
 
 // Listen user state changes
 initFirebaseAuth();
-
-getStudent();
-getToturs();
+// getStudent();
+// getToturs();
 initialTutorDesign();
 // Region for tutor
 console.log();
