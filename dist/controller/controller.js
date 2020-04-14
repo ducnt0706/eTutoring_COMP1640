@@ -235,21 +235,34 @@ function getMeetingByTutor(tutorGmail) {
 }
 //================================ End Handle meeting funtion !==========================
 //================================= Handle post function ========================
-// TODO:
-function createNewPost() {
+// TODO: Checking when user add image to post
+
+
+function createNewPost(file) {
   const form = document.querySelector('#create-new-post');
   var post = {
     tutorgmail: getGmail(),
     tutorname: getUserName(),
     tutorPictureurl: getProfilePicUrl(),
-    fileurl: "img/hotgirl1.jpg",
+    imageUrl: 'img/hotgirl1.jpg',
     content: form.content.value,
     time: firebase.firestore.FieldValue.serverTimestamp(),
     loves: 0
   };
-  return firebase.firestore().collection('posts').add(post).catch((error) => {
-    console.log("Error make new post", error);
-  })
+  firebase.firestore().collection('posts').add(post).then((postRef)=>{
+    // Upload the image to cloud
+    var filePath=getUid()+'/'+postRef.id+'/'+file.name;
+    return firebase.storage().ref(filePath).put(file).then((fileSnapshot)=>{
+      // Generate a public URL for the file.
+      return fileSnapshot.ref.getDownloadURL().then((url)=>{
+        // Update the chat message placeholder with the image's URL.
+        return postRef.update({
+          imageUrl: url,
+          storageUri: fileSnapshot.metadata.fullPath
+        });
+      });
+    })
+  });
 }
 function renderPost(doc) {
   var postItem =
@@ -264,7 +277,7 @@ function renderPost(doc) {
     '<div class="full-date"><small>' + doc.data().time.toDate()+ '</small></div>' +
     '<hr>' +
     '<p>' + doc.data().content + '</p>' +
-    '<img src="' + doc.data().fileurl + '" alt="Photo.." class="img-fluid">' +
+    '<img src="' + doc.data().imageUrl + '" alt="Photo.." class="img-fluid">' +
     '<div class="CTAs">' +
     '<button class="btn btn-xs btn-secondary"> <i class="fa fa-heart"></i> Love</button>' +
     '</div>' +
@@ -325,11 +338,17 @@ $('#sign-in').on('click', signIn);
 $('#btn-tutor-contact').on('click', tutorContactClick);
 $('#btn-tutor-dashboard').on('click', tutorDashboardClick);
 
+
 //create post event ===> can xu ly lai
+// const file=null;
+// document.getElementById('mediaInputPost').addEventListener('change',(e)=>{
+//  //get file
+//  file = e.target.files[0];
+// });
+
 $("#postSubmit").on('click', () => {
-  $("#create-new-post").submit();
+  $("#create-new-post").submit(createNewPost);
 });
-$("#create-new-post").submit(createNewPost);
 
 // Region for admin
 
