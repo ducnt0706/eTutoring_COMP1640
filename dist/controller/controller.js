@@ -33,8 +33,8 @@ function initFirebaseAuth() {
 
       // Region for loading Post, meeting, contact
       loadPostByTutorGmail(getGmail());
-      getContactByTutor("hannn@fpt.edu.vn");
-      getMeetingByTutor("hannn@fpt.edu.vn");
+      getContactByTutor(getGmail());
+      getMeetingByTutor(getGmail());
     } else {
       // User is signed out!
       $('#tutor-dashboard-page').hide();
