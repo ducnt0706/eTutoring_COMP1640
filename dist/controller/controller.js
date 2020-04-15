@@ -194,7 +194,6 @@ renderOptionStu = (stu)=>{
 
 }
 
-
 //get ListTotur data from sever
 
 function getToturs() {
@@ -255,8 +254,56 @@ function assignStuWithTotur (){
 
 }
 
+// -------------Show List of Assign
+function getListShow (){
+  $('#show-list').empty()
+  console.log('kkkkkkkk')
+  firebase.firestore().collection('ListAssignOfTotur').get().then(
+    (snap => snap.forEach(
+      (doc) => {
+         renderListAssign(doc.data())
+        }
+    ))
+  )
+}
 
+renderListAssign = (data)=>{
+  //console.log(data)
+  
+ var list = `
+              <div class="col" class="border">
+                <h1 class="p-3 mb-2 bg-info text-white">${data.name}</h1>
+                <ul class="list-group" id={"item"}>
+                  ${data.students.map((i)=>{ 
+                    console.log(i)
+                    return(
+                      `<li class="list-group-item list-group-item-success">${i}
+                          <button type="button" class="close" aria-label="Close" id="delete" onclick="myFunction(${i})"  >
+                              <span aria-hidden="true">&times</span>
+                          </button>
+                      </li>  `       
+                    )
+                    })
+                  }
+                </ul>
+              </div>
+              `
+  
+  $('#show-list').append(list);
+}
 
+deleteAssign=()=>{
+console.log('hhahahhahahahah')
+}
+
+// renderStuAssign = (data)=>{
+//   console.log('dadtanho--',data)
+  
+//     return (
+      
+//     )
+// }
+//------------------
 
 function tutorContactClick() {
   getToturs();
@@ -290,6 +337,7 @@ function initialTutorDesign() {
   $('#list-assigns').hide();
 }
 function clickListAssing(){
+  getListShow()
   $('#tutor-page-header').text("ListOfAssigns");
   $('#tutor-dashboard-header').hide();
   $('#dashboard-infor').hide();
@@ -312,6 +360,7 @@ $('#btn-tutor-dashboard').on('click', tutorDashboardClick);
 $('#btn-tutor-listAssign').on('click', clickListAssing);
 
  $('#assign').on('click', assignStuWithTotur);
+ $('#delete').on('click', deleteAssign);
 
 // Region for admin
 
@@ -322,6 +371,7 @@ initFirebaseAuth();
 // getStudent();
 // test1()
 // console.log(" update successfully !!");
+// getListShow()
 
 // getToturs();
 initialTutorDesign();
