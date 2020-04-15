@@ -178,7 +178,7 @@ function getStudent() {
 //renderList Student
 renderStudent=(stu)=>{
   var student = `
-  <li class="list-group-item">Name1:  ${stu.name} </li>
+  <li class="list-group-item">Name:  ${stu.name} </li>
   <li class="list-group-item">Email: ${stu.email}</li>  
   <br/>
   `
@@ -232,27 +232,22 @@ function assignStuWithTotur (){
   var emailStudent = document.getElementById('Email2').value
 
   //update student 
-  firebase.firestore().collection('listStudent').doc(`${emailStudent}`)
-  .update({
-    "supported":`${emailTotur}` , 
-  })
-  .then(function() {
-      console.log("Student update successfully !!");
-  });
-  //update Assign of Totur
-      var stu =  arrayStu.find((stu)=> stu.email === emailStudent)
-      firebase.firestore().collection('ListAssignOfTotur').doc(`${emailTotur}`).collection(`${emailTotur}`)
-      .add({
-          email:`${emailStudent}`,
-          name: stu.name
+      firebase.firestore().collection('listStudent').doc(`${emailStudent}`)
+      .update({
+        "supported":`${emailTotur}` , 
       })
-      .then(function(docRef) {
-          console.log("Document written with ID: ", docRef.id);
-      })
-      .catch(function(error) {
-          console.error("Error adding document: ", error);
+      .then(function() {
+          console.log("Student update successfully !!");
       });
-
+  //update Assign of Totur
+      //  var stu =  arrayStu.find((stu)=> stu.email === emailStudent)
+      firebase.firestore().collection('ListAssignOfTotur').doc(`${emailTotur}`)
+      .update({
+        "students": firebase.firestore.FieldValue.arrayUnion(`${emailStudent}`) , 
+      })
+      .then(function() {
+          console.log("Student update successfully !!");
+      });
      document.getElementById('Email1').value = ""
      document.getElementById('Email2').value = ""
       getStudent()
@@ -272,6 +267,7 @@ function tutorContactClick() {
   $('#dashboard-infor').hide();
   $('#tutor-contact-card').show();
   $('#form-assign').show()
+  $('#list-assigns').hide();
 
 }
 
@@ -281,6 +277,7 @@ function tutorDashboardClick() {
   $('#tutor-dashboard-header').show();
   $('#form-assign').hide();
   $('#dashboard-infor').show();
+  $('#list-assigns').hide();
 
 
 }
@@ -290,7 +287,7 @@ function initialTutorDesign() {
   $('#tutor-contact-card').hide();
   $('#list-stu').hide();
   $('#form-assign').hide();
-
+  $('#list-assigns').hide();
 }
 function clickListAssing(){
   $('#tutor-page-header').text("ListOfAssigns");
@@ -298,7 +295,11 @@ function clickListAssing(){
   $('#dashboard-infor').hide();
   $('#tutor-contact-card').hide();
   $('#form-assign').hide()
+  $('#list-assigns').show()
+
 }
+
+
 
 //=================================== ADD EVENTS ===============================
 
@@ -310,7 +311,7 @@ $('#btn-tutor-contact').on('click', tutorContactClick);
 $('#btn-tutor-dashboard').on('click', tutorDashboardClick);
 $('#btn-tutor-listAssign').on('click', clickListAssing);
 
-// $('#assign').on('click', assignStuWithTotur);
+ $('#assign').on('click', assignStuWithTotur);
 
 // Region for admin
 
@@ -319,7 +320,11 @@ $('#btn-tutor-listAssign').on('click', clickListAssing);
 // Listen user state changes
 initFirebaseAuth();
 // getStudent();
+// test1()
+// console.log(" update successfully !!");
+
 // getToturs();
 initialTutorDesign();
 // Region for tutor
-console.log();
+console.log();  
+
