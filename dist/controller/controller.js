@@ -184,7 +184,7 @@ function renderContact(doc) {
 //================================Handle meeting funtion==========================
 //TODO: Create new meeting
 function onMeetingSubmit(e){
-  e.preventDefault();
+  e.preventDefault(); 
    var tutorname=getUserName();
    var tutorgmail=getGmail();
    var title=$('#titleInputMeeting').val();
@@ -194,8 +194,12 @@ function onMeetingSubmit(e){
    var status=false;
    var studentgmail= $('#emailInputMeeting').val();
    var studentname= $('#nameInputMeeting').val();
-   createNewMeeting(tutorname,tutorgmail,title,content,date,time,status,studentgmail,studentname);
-  $('#noticeMeeting').text("Adding successfully!");
+   if(content!=""){
+    createNewMeeting(tutorname,tutorgmail,title,content,date,time,status,studentgmail,studentname);
+    $('#noticeMeeting').text("Adding successfully!");
+   }  
+  
+
 }
 function createNewMeeting(tutorname,tutorgmail,title,content,date,time,status,studentgmail,studentname) {
   var meetingDoc = {
@@ -245,6 +249,14 @@ function getMeetingByTutor(tutorGmail) {
     querySnapshot.forEach(function (doc) {
       renderMeeting(doc);
     });
+  });
+}
+//TODO: delete meeting
+function deleteMeeting(){
+  db.collection("meetings").doc("").delete().then(function() {
+    console.log("Document successfully deleted!");
+  }).catch(function(error) {
+    console.error("Error removing document: ", error);
   });
 }
 //================================ End Handle meeting funtion !==========================
