@@ -182,34 +182,19 @@ function renderContact(doc) {
 
 //================================Handle meeting funtion==========================
 //TODO: Create new meeting
-function onMeetingSubmit(e){
-  e.preventDefault();
-   var tutorname=getUserName();
-   var tutorgmail=getGmail();
-   var title=$('#titleInputMeeting').val();
-   var content=$('#contentInputMeeting').val();
-   var date=$('#dateInputMeeting').val();
-   var time=$('#timeInputMeeting').val();
-   var status=false;
-   var studentgmail= $('#emailInputMeeting').val();
-   var studentname= $('#nameInputMeeting').val();
-   createNewMeeting(tutorname,tutorgmail,title,content,date,time,status,studentgmail,studentname);
-  $('#noticeMeeting').text("Adding successfully!");
-}
-
-function createNewMeeting(tutorname,tutorgmail,title,content,date,time,status,studentgmail,studentname) {
+function createNewMeeting(meetingid) {
   var meetingDoc = {
-    studentgmail: studentgmail,
-    studentname: studentname,
-    tutorname: tutorname,
-    tutorgmail: tutorgmail,
-    title: title,
-    content: content,
-    date: date,
-    time: time,
-    status: status
+    studentgmail: "tuabc@gmail.com",
+    studentname: "Chu Cam Tu",
+    tutorname: "Nguyen Ngoc Han",
+    tutorgmail: "hannn@fpt.edu.vn",
+    title: "Thong bao ket hon",
+    content: "Thong bao vinh danh hoc sinh xuat ket voi chang trai song lam",
+    date: "25-04-2020",
+    time: "09:00 am",
+    status: true
   }
-  firebase.firestore().collection('meetings').add(meetingDoc).then(() => {
+  firebase.firestore().collection('meetings').doc(meetingid).set(meetingDoc).then(() => {
     console.log("Meeting Document successfully written!");
   })
 }
@@ -359,8 +344,7 @@ $("#postSubmit").on('click', () => {
   $("#create-new-post").submit(createNewPost);
 });
 
-// when create new meeting
-$('#meetingSubmit').on('click',onMeetingSubmit);
+// Region for admin
 
 // Set up initial
 
