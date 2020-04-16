@@ -15,9 +15,8 @@ function signOut() {
 // TODO 3: Initialize Firebase and Listen user state changes.
 function initFirebaseAuth() {
   firebase.auth().onAuthStateChanged(user => {
-
-    // Present tutor dashboard 
-    if (user != null && firebase.auth().currentUser.uid == "EYjCZIaYnIemSOjOGPONPBIFM2g1") { // User is signed in!
+      // User is signed in!
+    if (user != null && firebase.auth().currentUser.uid == "EYjCZIaYnIemSOjOGPONPBIFM2g1") { 
 
       // Get the signed-in user's profile pic and name.
       var profilePicUrl = getProfilePicUrl();
@@ -39,9 +38,12 @@ function initFirebaseAuth() {
       // User is signed out!
       $('#tutor-dashboard-page').hide();
       $('#login-page').show();
+
     }
   });
 }
+
+
 
 // TODO 4: Return the user's profile pic URL.
 function getProfilePicUrl() {
@@ -219,10 +221,12 @@ function createNewMeeting(tutorname,tutorgmail,title,content,date,time,status,st
 }
 // TODO: render meeting interface
 function renderMeeting(doc) {
+  var deletefunc=deleteMeeting(doc.id);
   var meetingItem =
     '<div class="item">' +
     '<div class="row">' +
     '<div class="col-4 date-holder text-right ">' +
+    '<div class="icon bg-danger" ><i class="fa fa-close "></i></div>'+
     '<div id="tutor-meeting-status" class="icon"><i class="fa fa-check "></i></div>' +
     '<div class="date">' +
     '<h5>' + doc.data().time + '</h5>' +
@@ -252,8 +256,8 @@ function getMeetingByTutor(tutorGmail) {
   });
 }
 //TODO: delete meeting
-function deleteMeeting(){
-  db.collection("meetings").doc("").delete().then(function() {
+function deleteMeeting(idMeeting){
+  firebase.firestore().collection("meetings").doc(idMeeting).delete().then(function() {
     console.log("Document successfully deleted!");
   }).catch(function(error) {
     console.error("Error removing document: ", error);
@@ -384,7 +388,7 @@ $('#meetingSubmit').on('click',onMeetingSubmit);
 // Set up initial
 
 // Listen user state changes
-initFirebaseAuth();
+
 
 
 initialTutorDesign();
@@ -393,3 +397,4 @@ initialTutorDesign();
 //createContact( "hannn@fpt.edu.vn","cobenhonhan@gmail.com");
 //createNewPost("mypost","hannn@fpt.edu.vn","Han Nguyen Ngoc","ancancanc.com","dlaaknckac.com","Hello World",69);
 
+initFirebaseAuth();
