@@ -161,22 +161,23 @@ function getContactByTutor(tutoruid) {
 //get list students from server
 
 var arrayStu = []
+
 function getStudent() {
   $("#listStudent").empty();
   $("#options-Stu").empty();
 
   firebase.firestore().collection('listStudent').get().then(function (querySnapshot) {
     querySnapshot.forEach(function (doc) {
-    if(doc.data().supported === "no"){
-      renderStudent(doc.data())
-      renderOptionStu(doc.data())
-      arrayStu.push(doc.data())
-    }
+      if (doc.data().supported === "no") {
+        renderStudent(doc.data())
+        renderOptionStu(doc.data())
+        arrayStu.push(doc.data())
+      }
     });
   });
 }
 //renderList Student
-renderStudent=(stu)=>{
+renderStudent = (stu) => {
   var student = `
   <li class="list-group-item">Name:  ${stu.name} </li>
   <li class="list-group-item">Email: ${stu.email}</li>  
@@ -185,9 +186,9 @@ renderStudent=(stu)=>{
   $('#listStudent').append(student);
 }
 
-renderOptionStu = (stu)=>{
-  var op = 
-  `
+renderOptionStu = (stu) => {
+  var op =
+    `
   <option value=${stu.email}>
   `
   $('#options-Stu').append(op);
@@ -198,16 +199,16 @@ renderOptionStu = (stu)=>{
 
 function getToturs() {
   $("#listTotur").empty();
-   $('#options-Totur').empty();
+  $('#options-Totur').empty();
   firebase.firestore().collection('listTutor').get().then(function (querySnapshot) {
     querySnapshot.forEach(function (doc) {
-     renderTotur(doc.data())
-     renderOptionTotor(doc.data())
+      renderTotur(doc.data())
+      renderOptionTotor(doc.data())
     });
   });
 }
 //render each Totur 
-renderTotur=(stu)=>{
+renderTotur = (stu) => {
   var tt = `
   <li class="list-group-item">Name:  ${stu.name} </li>
   <li class="list-group-item">Email: ${stu.email}</li>  
@@ -216,9 +217,9 @@ renderTotur=(stu)=>{
   $('#listTotur').append(tt);
 }
 
-renderOptionTotor = (stu)=>{
-  var op = 
-  `
+renderOptionTotor = (stu) => {
+  var op =
+    `
   <option value=${stu.email}>
   `
   $('#options-Totur').append(op);
@@ -226,51 +227,51 @@ renderOptionTotor = (stu)=>{
 }
 // assign stu vs totur
 
-function assignStuWithTotur (){
+function assignStuWithTotur() {
   var emailTotur = document.getElementById('Email1').value
   var emailStudent = document.getElementById('Email2').value
 
   //update student 
-      firebase.firestore().collection('listStudent').doc(`${emailStudent}`)
-      .update({
-        "supported":`${emailTotur}` , 
-      })
-      .then(function() {
-          console.log("Student update successfully !!");
-      });
+  firebase.firestore().collection('listStudent').doc(`${emailStudent}`)
+    .update({
+      "supported": `${emailTotur}`,
+    })
+    .then(function () {
+      console.log("Student update successfully !!");
+    });
   //update Assign of Totur
-      //  var stu =  arrayStu.find((stu)=> stu.email === emailStudent)
-      firebase.firestore().collection('ListAssignOfTotur').doc(`${emailTotur}`)
-      .update({
-        "students": firebase.firestore.FieldValue.arrayUnion(`${emailStudent}`) , 
-      })
-      .then(function() {
-          console.log("Student update successfully !!");
-      });
-     document.getElementById('Email1').value = ""
-     document.getElementById('Email2').value = ""
-      getStudent()
- 
+  //  var stu =  arrayStu.find((stu)=> stu.email === emailStudent)
+  firebase.firestore().collection('ListAssignOfTotur').doc(`${emailTotur}`)
+    .update({
+      "students": firebase.firestore.FieldValue.arrayUnion(`${emailStudent}`),
+    })
+    .then(function () {
+      console.log("Student update successfully !!");
+    });
+  document.getElementById('Email1').value = ""
+  document.getElementById('Email2').value = ""
+  getStudent()
+
 
 }
 
 // -------------Show List of Assign
-function getListShow (){
+function getListShow() {
   $('#show-list').empty()
   console.log('kkkkkkkk')
   firebase.firestore().collection('ListAssignOfTotur').get().then(
     (snap => snap.forEach(
       (doc) => {
-         renderListAssign(doc.data())
-        }
+        renderListAssign(doc.data())
+      }
     ))
   )
 }
 
-renderListAssign = (data)=>{
+renderListAssign = (data) => {
   //console.log(data)
-  
- var list = `
+
+  var list = `
               <div class="col" class="border">
                 <h1 class="p-3 mb-2 bg-info text-white">${data.name}</h1>
                 <ul class="list-group" id={"item"}>
@@ -278,7 +279,7 @@ renderListAssign = (data)=>{
                     console.log(i)
                     return(
                       `<li class="list-group-item list-group-item-success">${i}
-                          <button type="button" class="close" aria-label="Close" id="delete" onclick="myFunction(${i})"  >
+                          <button type="button" class="close" aria-label="Close" id="delete" onclick="myFunction('${i}','${data.email}')"  >
                               <span aria-hidden="true">&times</span>
                           </button>
                       </li>  `       
@@ -288,27 +289,51 @@ renderListAssign = (data)=>{
                 </ul>
               </div>
               `
-  
+
   $('#show-list').append(list);
 }
 
-deleteAssign=()=>{
-console.log('hhahahhahahahah')
+
+
+
+function myFunction(stu, totur) {
+  
+  var r = confirm("Do you want to delete assign,right ????");
+  if (r == true) {
+    //alert(x + y)
+    //update student
+    firebase.firestore().collection('listStudent').doc(stu)
+      .update({
+        "supported":"no" , 
+      })
+      .then(function() {
+          console.log("Student update successfully !!");
+      });
+    //update list assign 
+    firebase.firestore().collection('ListAssignOfTotur').doc(totur)
+    .update({
+      "students": firebase.firestore.FieldValue.arrayRemove(stu),
+    })
+    .then(function () {
+      console.log("Totur update successfully !!");
+    })
+    .catch(err=>console.log('loiiii',err))
+    ;
+
+    getListShow();
+
+  } else {
+    //alert('stoppp ')
+  }
+
 }
 
-// renderStuAssign = (data)=>{
-//   console.log('dadtanho--',data)
-  
-//     return (
-      
-//     )
-// }
 //------------------
 
 function tutorContactClick() {
   getToturs();
   getStudent();
-  
+
   $('#tutor-page-header').text("AssingStudent&Totur");
   $('#tutor-dashboard-header').hide();
   $('#dashboard-infor').hide();
@@ -336,7 +361,8 @@ function initialTutorDesign() {
   $('#form-assign').hide();
   $('#list-assigns').hide();
 }
-function clickListAssing(){
+
+function clickListAssing() {
   getListShow()
   $('#tutor-page-header').text("ListOfAssigns");
   $('#tutor-dashboard-header').hide();
@@ -359,8 +385,7 @@ $('#btn-tutor-contact').on('click', tutorContactClick);
 $('#btn-tutor-dashboard').on('click', tutorDashboardClick);
 $('#btn-tutor-listAssign').on('click', clickListAssing);
 
- $('#assign').on('click', assignStuWithTotur);
- $('#delete').on('click', deleteAssign);
+$('#assign').on('click', assignStuWithTotur);
 
 // Region for admin
 
@@ -376,5 +401,4 @@ initFirebaseAuth();
 // getToturs();
 initialTutorDesign();
 // Region for tutor
-console.log();  
-
+console.log();
