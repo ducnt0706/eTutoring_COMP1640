@@ -146,7 +146,7 @@ img
 	position: relative;
 	height: 10%;
 	background-color: #007bff;
-
+	border-bottom: none;
 	border: 1px solid #ccc;
 	width: 100%;
 	display: inline-block;
