@@ -130,7 +130,7 @@ function getContactByStudent(studentid) {
 function renderContact(doc) {
 
   var studentcontact =
-    '<div class="col-lg-4 student-contact">' +
+    '<div class="col-lg-6 student-contact">' +
     '<div class="client card">' +
 
     '<div class="card-close">' +
@@ -152,7 +152,7 @@ function renderContact(doc) {
     '<div class="client-title">' +
     '<h3>' + doc.data().name + '</h3>' +
     '<h3>' + doc.data().mssv + '</h3>' +
-    '<a href="#">Message</a>' +
+    '<a href="chat.html">Message</a>' +
     '</div>' +
     '<div class="client-info">' +
     '<div class="row">' +
@@ -256,7 +256,7 @@ function tutorDashboardClick() {
   $('#tutor-dashboard-timeline').show();
 }
 function initialTutorDesign() {
-  getContactByStudent("pxyo2cx3hIO3heXUsju15aN4hHG2");
+  getContactByStudent("hungtroy7c@gmail.com");
   getMeetingByTutor("hannn@fpt.edu.vn");
   $('#tutor-contact-card').hide();
 }
