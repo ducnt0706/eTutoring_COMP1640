@@ -282,31 +282,49 @@ function updateMeetingStatus(idMeeting){
 //================================ End Handle meeting funtion !==========================
 //================================= Handle post function ========================
 // TODO: Checking when user add image to post
+function onPostSubmit(e){
+  e.preventDefault();
+  var tutorgmail=getGmail();
+  var tutorname=getUserName();
+  var tutorPictureurl= getProfilePicUrl();
+  var imageUrl='img/hotgirl1.jpg';
+  var content=$('#contentInputPost').val();
+  var loves= 0;
+  let files= $('#mediaInputPost').change(function(e){
+    return e.target.files;
+  });
+  console.log(files[0].name);
+  if(content!=""){
+    //createNewPost(tutorgmail,tutorname,tutorPictureurl,imageUrl,content,time,loves,file);
+    
+  }
+}
 
-function createNewPost(file) {
-  const form = document.querySelector('#create-new-post');
+function createNewPost(tutorgmail,tutorname,tutorPictureurl,imageUrl,content,loves,file) {
   var post = {
-    tutorgmail: getGmail(),
-    tutorname: getUserName(),
-    tutorPictureurl: getProfilePicUrl(),
-    imageUrl: 'img/hotgirl1.jpg',
-    content: form.content.value,
+    tutorgmail: tutorgmail,
+    tutorname: tutorname,
+    tutorPictureurl: tutorPictureurl,
+    imageUrl: imageUrl,
+    content: content,
     time: firebase.firestore.FieldValue.serverTimestamp(),
-    loves: 0
+    loves: loves
   };
   firebase.firestore().collection('posts').add(post).then((postRef)=>{
     // Upload the image to cloud
     var filePath=getUid()+'/'+postRef.id+'/'+file.name;
-    return firebase.storage().ref(filePath).put(file).then((fileSnapshot)=>{
+    firebase.storage().ref(filePath).put(file).then((fileSnapshot)=>{
       // Generate a public URL for the file.
-      return fileSnapshot.ref.getDownloadURL().then((url)=>{
+      fileSnapshot.ref.getDownloadURL().then((url)=>{
         // Update the chat message placeholder with the image's URL.
-        return postRef.update({
+        postRef.update({
           imageUrl: url,
           storageUri: fileSnapshot.metadata.fullPath
         });
       });
     })
+  }).catch(function(error) {
+    console.error('There was an error uploading a file to Cloud Storage:', error);
   });
 }
 function renderPost(doc) {
@@ -391,9 +409,7 @@ $('#btn-tutor-dashboard').on('click', tutorDashboardClick);
 //  file = e.target.files[0];
 // });
 
-$("#postSubmit").on('click', () => {
-  $("#create-new-post").submit(createNewPost);
-});
+$("#postSubmit").on('click', onPostSubmit);
 
 // when create new meeting
 $('#meetingSubmit').on('click',onMeetingSubmit);
