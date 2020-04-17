@@ -14,6 +14,7 @@ function signOut() {
 
 // TODO 3: Initialize Firebase and Listen user state changes.
 function initFirebaseAuth() {
+  var user=null;
   firebase.auth().onAuthStateChanged(user => {
       // User is signed in!
     if (user != null && firebase.auth().currentUser.uid == "EYjCZIaYnIemSOjOGPONPBIFM2g1") { 
@@ -42,7 +43,6 @@ function initFirebaseAuth() {
     }
   });
 }
-
 
 
 // TODO 4: Return the user's profile pic URL.
@@ -221,13 +221,13 @@ function createNewMeeting(tutorname,tutorgmail,title,content,date,time,status,st
 }
 // TODO: render meeting interface
 function renderMeeting(doc) {
-  var deletefunc=deleteMeeting(doc.id);
+  
   var meetingItem =
     '<div class="item">' +
     '<div class="row">' +
-    '<div class="col-4 date-holder text-right ">' +
-    '<div class="icon bg-danger" ><i class="fa fa-close "></i></div>'+
-    '<div id="tutor-meeting-status" class="icon"><i class="fa fa-check "></i></div>' +
+    '<div class="col-4 date-holder text-right item-meeting">' +
+    '<div id="tutor-meeting-delete" class="icon bg-danger "><i class="fa fa-close "></i></div>'+
+    '<div class="icon tutor-meeting-status"><i class="fa fa-check "></i></div>' +
     '<div class="date">' +
     '<h5>' + doc.data().time + '</h5>' +
     '<h7 class="text-info">' + doc.data().date + '</h7>' +
@@ -242,9 +242,16 @@ function renderMeeting(doc) {
     '</div>';
 
   $('#tutor-meeting-box').append(meetingItem);
+  $("#tutor-meeting-delete").attr('id', doc.id);
+  //add event delete buttons
+  let newId="#"+doc.id;
+  $(newId).on('click', function(e){
+    e.stopPropagation();
+    deleteMeeting(doc.id);
+  })
   // Change status of meeting
   if (doc.data().status == true) {
-    $('#tutor-meeting-status').attr("background-color", "#3cb371");
+    $('.tutor-meeting-status').attr("background-color", "#3cb371");
   };
 };
 // TODO: present meeting interface from db
@@ -263,10 +270,18 @@ function deleteMeeting(idMeeting){
     console.error("Error removing document: ", error);
   });
 }
+function updateMeetingStatus(idMeeting){
+  firebase.firestore().collection("meetings").doc(idMeeting).update({
+    status: true
+  }).then(function() {
+    console.log("Document successfully updated!");
+  }).catch(function(error) {
+    console.error("Error updating document: ", error);
+  });
+}
 //================================ End Handle meeting funtion !==========================
 //================================= Handle post function ========================
 // TODO: Checking when user add image to post
-
 
 function createNewPost(file) {
   const form = document.querySelector('#create-new-post');
