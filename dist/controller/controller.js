@@ -14,10 +14,18 @@ function signOut() {
 
 // TODO 3: Initialize Firebase and Listen user state changes.
 function initFirebaseAuth() {
-  var user=null;
-  firebase.auth().onAuthStateChanged(user => {
+
+  var listUid = []
+  firebase.firestore().collection('listStudent').get().then((docSnapshot)=>{
+    docSnapshot.forEach((doc)=>{
+      listUid.push(doc.data().uid)
+    })
+  })
+
+  console.log('my arrays',listUid)
+    firebase.auth().onAuthStateChanged(user => {
       // User is signed in!
-    if (user != null && firebase.auth().currentUser.uid == "EYjCZIaYnIemSOjOGPONPBIFM2g1") { 
+    if (user != null && listUid.includes(firebase.auth().currentUser.uid)) { 
 
       // Get the signed-in user's profile pic and name.
       var profilePicUrl = getProfilePicUrl();
