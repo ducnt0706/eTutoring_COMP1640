@@ -27,9 +27,10 @@ function signOut() {
 
 // TODO 3: Initialize Firebase and Listen user state changes.
 function initFirebaseAuth() {
-  firebase.auth().onAuthStateChanged(user => {
+    
+    firebase.auth().onAuthStateChanged(user => {
     // Present tutor dashboard 
-    if (user != null) { // User is signed in!
+    if (user != null && firebase.auth().currentUser.uid == "iC8d3oEGkRY7qbjsoiJCJ0mkG5y2") { // User is signed in!
       // Get the signed-in user's profile pic and name.
       var profilePicUrl = getProfilePicUrl();
       userName = getUserName();
@@ -257,6 +258,7 @@ function assignStuWithTotur() {
 
 // -------------Show List of Assign
 function getListShow() {
+  
   $('#show-list').empty()
   console.log('kkkkkkkk')
   firebase.firestore().collection('ListAssignOfTotur').get().then(
@@ -326,6 +328,10 @@ function myFunction(stu, totur) {
     //alert('stoppp ')
   }
 
+}
+
+function vip(){
+  
 }
 
 //------------------
@@ -401,4 +407,3 @@ initFirebaseAuth();
 // getToturs();
 initialTutorDesign();
 // Region for tutor
-console.log();
