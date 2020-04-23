@@ -195,67 +195,7 @@ renderOptionStu = (stu) => {
   $('#options-Stu').append(op);
 
 }
-<<<<<<< HEAD
 
-//get ListTotur data from sever
-
-function getToturs() {
-  $("#listTotur").empty();
-  $('#options-Totur').empty();
-  firebase.firestore().collection('listTutor').get().then(function (querySnapshot) {
-    querySnapshot.forEach(function (doc) {
-      renderTotur(doc.data())
-      renderOptionTotor(doc.data())
-    });
-  });
-}
-//render each Totur 
-renderTotur = (stu) => {
-  var tt = `
-  <li class="list-group-item">Name:  ${stu.name} </li>
-  <li class="list-group-item">Email: ${stu.email}</li>  
-  <br/>
-  `
-  $('#listTotur').append(tt);
-}
-
-renderOptionTotor = (stu) => {
-  var op =
-    `
-  <option value=${stu.email}>
-  `
-  $('#options-Totur').append(op);
-
-}
-// assign stu vs totur
-
-function assignStuWithTotur() {
-  var emailTotur = document.getElementById('Email1').value
-  var emailStudent = document.getElementById('Email2').value
-
-  //update student 
-  firebase.firestore().collection('listStudent').doc(`${emailStudent}`)
-    .update({
-      "supported": `${emailTotur}`,
-    })
-    .then(function () {
-      console.log("Student update successfully !!");
-    });
-  //update Assign of Totur
-  //  var stu =  arrayStu.find((stu)=> stu.email === emailStudent)
-  firebase.firestore().collection('ListAssignOfTotur').doc(`${emailTotur}`)
-    .update({
-      "students": firebase.firestore.FieldValue.arrayUnion(`${emailStudent}`),
-    })
-    .then(function () {
-      console.log("Student update successfully !!");
-    });
-  document.getElementById('Email1').value = ""
-  document.getElementById('Email2').value = ""
-  getStudent()
-
-
-=======
 //================================ End Handle meeting funtion !==========================
 //================================= Handle post function ========================
 // TODO: Checking when user add image to post
@@ -285,7 +225,6 @@ function createNewPost(file) {
       });
     })
   });
->>>>>>> parent of dbd8c14... dQ
 }
 
 // -------------Show List of Assign
@@ -400,16 +339,6 @@ function initialTutorDesign() {
   $('#list-assigns').hide();
 }
 
-function clickListAssing() {
-  getListShow()
-  $('#tutor-page-header').text("ListOfAssigns");
-  $('#tutor-dashboard-header').hide();
-  $('#dashboard-infor').hide();
-  $('#tutor-contact-card').hide();
-  $('#form-assign').hide()
-  $('#list-assigns').show()
-
-}
 
 
 
@@ -423,9 +352,7 @@ $('#btn-tutor-contact').on('click', tutorContactClick);
 $('#btn-tutor-dashboard').on('click', tutorDashboardClick);
 $('#btn-tutor-listAssign').on('click', clickListAssing);
 
-<<<<<<< HEAD
-$('#assign').on('click', assignStuWithTotur);
-=======
+
 
 //create post event ===> can xu ly lai
 // const file=null;
@@ -440,7 +367,6 @@ $("#postSubmit").on('click', () => {
 
 // when create new meeting
 $('#meetingSubmit').on('click',onMeetingSubmit);
->>>>>>> parent of dbd8c14... dQ
 
 // Region for admin
 
