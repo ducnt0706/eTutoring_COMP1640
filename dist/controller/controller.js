@@ -27,10 +27,17 @@ function signOut() {
 
 // TODO 3: Initialize Firebase and Listen user state changes.
 function initFirebaseAuth() {
+<<<<<<< HEAD
     
     firebase.auth().onAuthStateChanged(user => {
     // Present tutor dashboard 
     if (user != null && firebase.auth().currentUser.uid == "iC8d3oEGkRY7qbjsoiJCJ0mkG5y2") { // User is signed in!
+=======
+  firebase.auth().onAuthStateChanged(user => {
+      // User is signed in!
+    if (user != null && firebase.auth().currentUser.uid == "EYjCZIaYnIemSOjOGPONPBIFM2g1") { 
+
+>>>>>>> parent of a533e16... meeting
       // Get the signed-in user's profile pic and name.
       var profilePicUrl = getProfilePicUrl();
       userName = getUserName();
@@ -59,6 +66,7 @@ function initFirebaseAuth() {
 assignToturWithStudent = () => {
 
 }
+
 
 // TODO 4: Return the user's profile pic URL.
 function getProfilePicUrl() {
@@ -161,6 +169,7 @@ function getContactByTutor(tutoruid) {
 
 //get list students from server
 
+<<<<<<< HEAD
 var arrayStu = []
 
 function getStudent() {
@@ -168,6 +177,56 @@ function getStudent() {
   $("#options-Stu").empty();
 
   firebase.firestore().collection('listStudent').get().then(function (querySnapshot) {
+=======
+}
+function createNewMeeting(tutorname,tutorgmail,title,content,date,time,status,studentgmail,studentname) {
+  var meetingDoc = {
+    studentgmail: studentgmail,
+    studentname: studentname,
+    tutorname: tutorname,
+    tutorgmail: tutorgmail,
+    title: title,
+    content: content,
+    date: date,
+    time: time,
+    status: status
+  }
+  firebase.firestore().collection('meetings').add(meetingDoc).then(() => {
+    console.log("Meeting Document successfully written!");
+  })
+}
+// TODO: render meeting interface
+function renderMeeting(doc) {
+  var deletefunc=deleteMeeting(doc.id);
+  var meetingItem =
+    '<div class="item">' +
+    '<div class="row">' +
+    '<div class="col-4 date-holder text-right ">' +
+    '<div class="icon bg-danger" ><i class="fa fa-close "></i></div>'+
+    '<div id="tutor-meeting-status" class="icon"><i class="fa fa-check "></i></div>' +
+    '<div class="date">' +
+    '<h5>' + doc.data().time + '</h5>' +
+    '<h7 class="text-info">' + doc.data().date + '</h7>' +
+    '</div>' +
+    '</div>' +
+    '<div id="tutor-meeting-content" class="col-8 content">' +
+    '<h5>' + doc.data().title + '</h5>' +
+    '<p>' + doc.data().content + '</p>' +
+    '<p>' + doc.data().studentname + '<br>' + doc.data().studentgmail + '</p>' +
+    '</div>' +
+    '</div>' +
+    '</div>';
+
+  $('#tutor-meeting-box').append(meetingItem);
+  // Change status of meeting
+  if (doc.data().status == true) {
+    $('#tutor-meeting-status').attr("background-color", "#3cb371");
+  };
+};
+// TODO: present meeting interface from db
+function getMeetingByTutor(tutorGmail) {
+  firebase.firestore().collection('meetings').where("tutorgmail", "==", tutorGmail).limit(10).get().then(function (querySnapshot) {
+>>>>>>> parent of a533e16... meeting
     querySnapshot.forEach(function (doc) {
       if (doc.data().supported === "no") {
         renderStudent(doc.data())
@@ -186,6 +245,7 @@ renderStudent = (stu) => {
   `
   $('#listStudent').append(student);
 }
+<<<<<<< HEAD
 
 renderOptionStu = (stu) => {
   var op =
@@ -196,9 +256,12 @@ renderOptionStu = (stu) => {
 
 }
 
+=======
+>>>>>>> parent of a533e16... meeting
 //================================ End Handle meeting funtion !==========================
 //================================= Handle post function ========================
 // TODO: Checking when user add image to post
+
 
 function createNewPost(file) {
   const form = document.querySelector('#create-new-post');
