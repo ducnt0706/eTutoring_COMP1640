@@ -195,6 +195,7 @@ renderOptionStu = (stu) => {
   $('#options-Stu').append(op);
 
 }
+<<<<<<< HEAD
 
 //get ListTotur data from sever
 
@@ -254,6 +255,37 @@ function assignStuWithTotur() {
   getStudent()
 
 
+=======
+//================================ End Handle meeting funtion !==========================
+//================================= Handle post function ========================
+// TODO: Checking when user add image to post
+
+function createNewPost(file) {
+  const form = document.querySelector('#create-new-post');
+  var post = {
+    tutorgmail: getGmail(),
+    tutorname: getUserName(),
+    tutorPictureurl: getProfilePicUrl(),
+    imageUrl: 'img/hotgirl1.jpg',
+    content: form.content.value,
+    time: firebase.firestore.FieldValue.serverTimestamp(),
+    loves: 0
+  };
+  firebase.firestore().collection('posts').add(post).then((postRef)=>{
+    // Upload the image to cloud
+    var filePath=getUid()+'/'+postRef.id+'/'+file.name;
+    return firebase.storage().ref(filePath).put(file).then((fileSnapshot)=>{
+      // Generate a public URL for the file.
+      return fileSnapshot.ref.getDownloadURL().then((url)=>{
+        // Update the chat message placeholder with the image's URL.
+        return postRef.update({
+          imageUrl: url,
+          storageUri: fileSnapshot.metadata.fullPath
+        });
+      });
+    })
+  });
+>>>>>>> parent of dbd8c14... dQ
 }
 
 // -------------Show List of Assign
@@ -391,7 +423,24 @@ $('#btn-tutor-contact').on('click', tutorContactClick);
 $('#btn-tutor-dashboard').on('click', tutorDashboardClick);
 $('#btn-tutor-listAssign').on('click', clickListAssing);
 
+<<<<<<< HEAD
 $('#assign').on('click', assignStuWithTotur);
+=======
+
+//create post event ===> can xu ly lai
+// const file=null;
+// document.getElementById('mediaInputPost').addEventListener('change',(e)=>{
+//  //get file
+//  file = e.target.files[0];
+// });
+
+$("#postSubmit").on('click', () => {
+  $("#create-new-post").submit(createNewPost);
+});
+
+// when create new meeting
+$('#meetingSubmit').on('click',onMeetingSubmit);
+>>>>>>> parent of dbd8c14... dQ
 
 // Region for admin
 
