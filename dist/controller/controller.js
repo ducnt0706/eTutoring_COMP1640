@@ -27,7 +27,10 @@ function signOut() {
 
 // TODO 3: Initialize Firebase and Listen user state changes.
 function initFirebaseAuth() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of a533e16... meeting
   firebase.auth().onAuthStateChanged(user => {
       // User is signed in!
     if (user != null && firebase.auth().currentUser.uid == "EYjCZIaYnIemSOjOGPONPBIFM2g1") { 
@@ -59,6 +62,7 @@ function initFirebaseAuth() {
 assignToturWithStudent = () => {
 
 }
+
 
 
 
@@ -217,6 +221,17 @@ function getMeetingByTutor(tutorGmail) {
     });
   });
 }
+<<<<<<< HEAD
+=======
+//TODO: delete meeting
+function deleteMeeting(idMeeting){
+  firebase.firestore().collection("meetings").doc(idMeeting).delete().then(function() {
+    console.log("Document successfully deleted!");
+  }).catch(function(error) {
+    console.error("Error removing document: ", error);
+  });
+}
+>>>>>>> parent of a533e16... meeting
 //================================ End Handle meeting funtion !==========================
 //================================= Handle post function ========================
 // TODO: Checking when user add image to post
