@@ -229,10 +229,6 @@ function getMeetingByTutor(tutorgmail) {
 }
 //================================ End Handle meeting funtion !==========================
 //================================= Handle post function ========================
-// TODO:
-function createNewPost(){
-
-}
 function renderPost(doc){
 
 }
