@@ -17,7 +17,7 @@ function initFirebaseAuth() {
   firebase.auth().onAuthStateChanged(user => {
     // Present tutor dashboard 
     if (user != null && firebase.auth().currentUser.uid == "pxyo2cx3hIO3heXUsju15aN4hHG2") { // User is signed in!
-      
+
       // Get the signed-in user's profile pic and name.
       var profilePicUrl = getProfilePicUrl();
       var userName = getUserName();
@@ -116,6 +116,7 @@ function createContact(tutorgmail, studentgmail) {
     console.log(" Contact Document successfully written!");
   });
 }
+
 // TODO 11: get contact by student id 
 function getContactByStudent(studentid) {
   firebase.firestore().collection('studentcontacts').doc(studentid).collection('tutor').get().then(function (querySnapshot) {
@@ -123,12 +124,13 @@ function getContactByStudent(studentid) {
       // doc.data() is never undefined for query doc snapshots       
       // Render contact interface
       renderContact(doc);
+      rendertutormessenger(doc);
     });
   });
 }
+
 // TODO 12: render contact interface
 function renderContact(doc) {
-
   var studentcontact =
     '<div class="col-lg-6 student-contact">' +
     '<div class="client card">' +
@@ -167,11 +169,23 @@ function renderContact(doc) {
     '</div>' +
     '</div>' +
     '</div>';
-
   $('#tutor-row-contact').append(studentcontact);
 
+}
 
-
+// TODO 13: render list contact of messenger
+function rendertutormessenger(doc) {
+  var tutormessenger =
+  '<div class="item">' +
+    '<div class="feed d-flex justify-content-between">' +
+      '<div class="feed-body d-flex justify-content-between"><a href="#" class="feed-profile"><img src="img/avatar-2.jpg" alt="person" class="img-fluid rounded-circle"></a>' +
+        '<div class="content">' +
+          '<h5>' + doc.data().name + '</h5>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+  $('#tutor-mess-contact').append(tutormessenger);
 }
 //============================================ Handle contact End! =============
 
@@ -180,7 +194,7 @@ function renderContact(doc) {
 function createNewMeeting(meetingid) {
   var meetingDoc = {
     studentgmail: "tuabc@gmail.com",
-    studentname:"Chu Cam Tu",
+    studentname: "Chu Cam Tu",
     tutorname: "Nguyen Ngoc Han",
     tutorgmail: "hannn@fpt.edu.vn",
     title: "Thong bao ket hon",
@@ -196,32 +210,32 @@ function createNewMeeting(meetingid) {
 // TODO: render meeting interface
 function renderMeeting(doc) {
   var meetingItem =
-    '<div class="item">'+
-      '<div class="row">'+
-        '<div class="col-4 date-holder text-right ">'+
-          '<div id="tutor-meeting-status" class="icon"><i class="fa fa-check "></i></div>'+
-          '<div class="date">'+
-            '<h5>'+doc.data().time+'</h5>'+
-            '<h7 class="text-info">'+doc.data().date+'</h7>'+
-          '</div>'+
-        '</div>'+
-        '<div id="tutor-meeting-content" class="col-8 content">'+
-          '<h5>'+doc.data().title+'</h5>'+
-          '<p>'+doc.data().content + '</p>'+
-          '<p>'+doc.data().studentname+'<br>'+doc.data().studentgmail+'</p>'+
-        '</div>'+
-      '</div>'+
+    '<div class="item">' +
+    '<div class="row">' +
+    '<div class="col-4 date-holder text-right ">' +
+    '<div id="tutor-meeting-status" class="icon"><i class="fa fa-check "></i></div>' +
+    '<div class="date">' +
+    '<h5>' + doc.data().time + '</h5>' +
+    '<h7 class="text-info">' + doc.data().date + '</h7>' +
+    '</div>' +
+    '</div>' +
+    '<div id="tutor-meeting-content" class="col-8 content">' +
+    '<h5>' + doc.data().title + '</h5>' +
+    '<p>' + doc.data().content + '</p>' +
+    '<p>' + doc.data().studentname + '<br>' + doc.data().studentgmail + '</p>' +
+    '</div>' +
+    '</div>' +
     '</div>';
 
   $('#tutor-meeting-box').append(meetingItem);
   // Change status of meeting
-  if(doc.data().status==true){
-    $('#tutor-meeting-status').attr("background-color","#3cb371");
+  if (doc.data().status == true) {
+    $('#tutor-meeting-status').attr("background-color", "#3cb371");
   };
 };
 // TODO: present meeting interface from db
 function getMeetingByTutor(tutorgmail) {
-  firebase.firestore().collection('meetings').where("tutorgmail","==",tutorgmail).limit(10).get().then(function (querySnapshot) {
+  firebase.firestore().collection('meetings').where("tutorgmail", "==", tutorgmail).limit(10).get().then(function (querySnapshot) {
     querySnapshot.forEach(function (doc) {
       renderMeeting(doc);
     });
@@ -230,13 +244,13 @@ function getMeetingByTutor(tutorgmail) {
 //================================ End Handle meeting funtion !==========================
 //================================= Handle post function ========================
 // TODO:
-function createNewPost(){
+function createNewPost() {
 
 }
-function renderPost(doc){
+function renderPost(doc) {
 
 }
-function getPostByTutor(){
+function getPostByTutor() {
 
 }
 //================================== End post function !========================
@@ -248,17 +262,26 @@ function tutorContactClick() {
   $('#tutor-dashboard-header').hide();
   $('#tutor-contact-card').show();
   $('#tutor-dashboard-timeline').hide();
+  $('#tutor-messenger-card').hide();
 }
 function tutorDashboardClick() {
   $('#tutor-page-header').text("Dashboard");
   $('#tutor-contact-card').hide();
   $('#tutor-dashboard-header').show();
   $('#tutor-dashboard-timeline').show();
+  $('#tutor-messenger-card').hide();
 }
 function initialTutorDesign() {
   getContactByStudent("hungtroy7c@gmail.com");
   getMeetingByTutor("hannn@fpt.edu.vn");
   $('#tutor-contact-card').hide();
+}
+function tutorMessengerClick() {
+  $('#tutor-page-header').text("Messenger");
+  $('#tutor-contact-card').hide();
+  $('#tutor-dashboard-header').hide();
+  $('#tutor-dashboard-timeline').hide();
+  $('#tutor-messenger-card').show();
 }
 //==============================Handlde loading interface setting end!=======================
 
@@ -269,6 +292,7 @@ $('#sign-in').on('click', signIn);
 
 $('#btn-tutor-contact').on('click', tutorContactClick);
 $('#btn-tutor-dashboard').on('click', tutorDashboardClick);
+$('#btn-tutor-messenger').on('click', tutorMessengerClick);
 // Region for admin
 
 // Set up initial
