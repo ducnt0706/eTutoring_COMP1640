@@ -27,17 +27,10 @@ function signOut() {
 
 // TODO 3: Initialize Firebase and Listen user state changes.
 function initFirebaseAuth() {
-<<<<<<< HEAD
-    
-    firebase.auth().onAuthStateChanged(user => {
-    // Present tutor dashboard 
-    if (user != null && firebase.auth().currentUser.uid == "iC8d3oEGkRY7qbjsoiJCJ0mkG5y2") { // User is signed in!
-=======
+
   firebase.auth().onAuthStateChanged(user => {
       // User is signed in!
     if (user != null && firebase.auth().currentUser.uid == "EYjCZIaYnIemSOjOGPONPBIFM2g1") { 
-
->>>>>>> parent of a533e16... meeting
       // Get the signed-in user's profile pic and name.
       var profilePicUrl = getProfilePicUrl();
       userName = getUserName();
@@ -66,6 +59,7 @@ function initFirebaseAuth() {
 assignToturWithStudent = () => {
 
 }
+
 
 
 // TODO 4: Return the user's profile pic URL.
@@ -169,16 +163,8 @@ function getContactByTutor(tutoruid) {
 
 //get list students from server
 
-<<<<<<< HEAD
-var arrayStu = []
 
-function getStudent() {
-  $("#listStudent").empty();
-  $("#options-Stu").empty();
 
-  firebase.firestore().collection('listStudent').get().then(function (querySnapshot) {
-=======
-}
 function createNewMeeting(tutorname,tutorgmail,title,content,date,time,status,studentgmail,studentname) {
   var meetingDoc = {
     studentgmail: studentgmail,
@@ -226,38 +212,11 @@ function renderMeeting(doc) {
 // TODO: present meeting interface from db
 function getMeetingByTutor(tutorGmail) {
   firebase.firestore().collection('meetings').where("tutorgmail", "==", tutorGmail).limit(10).get().then(function (querySnapshot) {
->>>>>>> parent of a533e16... meeting
     querySnapshot.forEach(function (doc) {
-      if (doc.data().supported === "no") {
-        renderStudent(doc.data())
-        renderOptionStu(doc.data())
-        arrayStu.push(doc.data())
-      }
+      renderMeeting(doc);
     });
   });
 }
-//renderList Student
-renderStudent = (stu) => {
-  var student = `
-  <li class="list-group-item">Name:  ${stu.name} </li>
-  <li class="list-group-item">Email: ${stu.email}</li>  
-  <br/>
-  `
-  $('#listStudent').append(student);
-}
-<<<<<<< HEAD
-
-renderOptionStu = (stu) => {
-  var op =
-    `
-  <option value=${stu.email}>
-  `
-  $('#options-Stu').append(op);
-
-}
-
-=======
->>>>>>> parent of a533e16... meeting
 //================================ End Handle meeting funtion !==========================
 //================================= Handle post function ========================
 // TODO: Checking when user add image to post
@@ -290,83 +249,8 @@ function createNewPost(file) {
   });
 }
 
-// -------------Show List of Assign
-function getListShow() {
-  
-  $('#show-list').empty()
-  console.log('kkkkkkkk')
-  firebase.firestore().collection('ListAssignOfTotur').get().then(
-    (snap => snap.forEach(
-      (doc) => {
-        renderListAssign(doc.data())
-      }
-    ))
-  )
-}
-
-renderListAssign = (data) => {
-  //console.log(data)
-
-  var list = `
-              <div class="col" class="border">
-                <h1 class="p-3 mb-2 bg-info text-white">${data.name}</h1>
-                <ul class="list-group" id={"item"}>
-                  ${data.students.map((i)=>{ 
-                    console.log(i)
-                    return(
-                      `<li class="list-group-item list-group-item-success">${i}
-                          <button type="button" class="close" aria-label="Close" id="delete" onclick="myFunction('${i}','${data.email}')"  >
-                              <span aria-hidden="true">&times</span>
-                          </button>
-                      </li>  `       
-                    )
-                    })
-                  }
-                </ul>
-              </div>
-              `
-
-  $('#show-list').append(list);
-}
 
 
-
-
-function myFunction(stu, totur) {
-  
-  var r = confirm("Do you want to delete assign,right ????");
-  if (r == true) {
-    //alert(x + y)
-    //update student
-    firebase.firestore().collection('listStudent').doc(stu)
-      .update({
-        "supported":"no" , 
-      })
-      .then(function() {
-          console.log("Student update successfully !!");
-      });
-    //update list assign 
-    firebase.firestore().collection('ListAssignOfTotur').doc(totur)
-    .update({
-      "students": firebase.firestore.FieldValue.arrayRemove(stu),
-    })
-    .then(function () {
-      console.log("Totur update successfully !!");
-    })
-    .catch(err=>console.log('loiiii',err))
-    ;
-
-    getListShow();
-
-  } else {
-    //alert('stoppp ')
-  }
-
-}
-
-function vip(){
-  
-}
 
 //------------------
 
