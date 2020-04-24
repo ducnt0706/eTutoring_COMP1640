@@ -244,7 +244,7 @@ function assignStuWithTotur() {
   //  var stu =  arrayStu.find((stu)=> stu.email === emailStudent)
   firebase.firestore().collection('ListAssignOfTotur').doc(`${emailTotur}`)
     .update({
-      "students": firebase.firestore.FieldValue.arrayUnion(`${emailStudent}`),
+      "students": firebase.firestore.FieldValue.arrayUnion({email:`${emailStudent}`,lasiTimeSignIn:0}),
     })
     .then(function () {
       console.log("Student update successfully !!");
@@ -280,8 +280,8 @@ renderListAssign = (data) => {
                   ${data.students.map((i)=>{ 
                     console.log(i)
                     return(
-                      `<li class="list-group-item list-group-item-success">${i}
-                          <button type="button" class="close" aria-label="Close" id="delete" onclick="myFunction('${i}','${data.email}')"  >
+                      `<li class="list-group-item list-group-item-success">${i.email}
+                          <button type="button" class="close" aria-label="Close" id="delete" onclick="myFunction('${i.email}','${data.email}')"  >
                               <span aria-hidden="true">&times</span>
                           </button>
                       </li>  `       
@@ -299,7 +299,7 @@ renderListAssign = (data) => {
 
 
 function myFunction(stu, totur) {
-  
+  let listStuOfTotur = []
   var r = confirm("Do you want to delete assign,right ????");
   if (r == true) {
     //alert(x + y)
@@ -311,18 +311,19 @@ function myFunction(stu, totur) {
       .then(function() {
           console.log("Student update successfully !!");
       });
-    //update list assign 
-    firebase.firestore().collection('ListAssignOfTotur').doc(totur)
-    .update({
-      "students": firebase.firestore.FieldValue.arrayRemove(stu),
-    })
-    .then(function () {
-      console.log("Totur update successfully !!");
-    })
-    .catch(err=>console.log('loiiii',err))
-    ;
+     //getlist_student_of Totur
+     firebase.firestore().collection('ListAssignOfTotur').doc(totur).get().then(
+       (doc) => { 
+        listStuOfTotur = doc.data().students
+        console.log('stddddd',listStuOfTotur)
+        var stuDetete = listStuOfTotur.find(x=>x.email === stu)
+          return vip(stuDetete,totur)
+      }
 
-    getListShow();
+     )
+
+     
+    
 
   } else {
     //alert('stoppp ')
@@ -330,8 +331,19 @@ function myFunction(stu, totur) {
 
 }
 
-function vip(){
-  
+function vip(x,totur){
+  //update list assign 
+  firebase.firestore().collection('ListAssignOfTotur').doc(totur)
+  .update({
+    "students": firebase.firestore.FieldValue.arrayRemove(x),
+  })
+  .then(function () {
+    console.log("Totur dai ca update successfully !!");
+  })
+  .catch(err=>console.log('loiiii',err))
+  ;
+
+  getListShow();
 }
 
 //------------------
