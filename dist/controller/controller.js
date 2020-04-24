@@ -16,7 +16,7 @@ function signOut() {
 function initFirebaseAuth() {
   firebase.auth().onAuthStateChanged(user => {
     // Present tutor dashboard 
-    if (user != null && firebase.auth().currentUser.uid == "pxyo2cx3hIO3heXUsju15aN4hHG2") { // User is signed in!
+    if (user != null ) { // User is signed in!
 
       // Get the signed-in user's profile pic and name.
       var profilePicUrl = getProfilePicUrl();
@@ -295,7 +295,6 @@ $('#btn-tutor-messenger').on('click', tutorMessengerClick);
 
 // Listen user state changes
 initFirebaseAuth();
-
 
 initialTutorDesign();
 // Region for tutor
