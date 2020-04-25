@@ -436,27 +436,46 @@
           </section>
         </div>
 
-        <!-- Messages container -->
-        <div hidden id="messages-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--6-col-desktop">
-            <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-              <div id="messages">
-              </div>
-              <form id="message-form" action="#">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                  <input class="mdl-textfield__input" type="text" id="message" autocomplete="off">
-                  <label class="mdl-textfield__label" for="message">Message...</label>
-                </div>
-                <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-                  Send
-                </button>
-              </form>
-              <form id="image-form" action="#">
-                <input id="mediaCapture" type="file" accept="image/*" capture="camera">
-                <button id="submitImage" title="Add an image" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--amber-400 mdl-color-text--white">
-                  <i class="material-icons">image</i>
-                </button>
-              </form>
-            </div>
+        <div class="col-lg-4 student-contact">
+          <div class="client card">
+      
+          <div class="card-close">
+          <div class="dropdown">
+          <button type="button" id="closeCard2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle">
+          <i class="fa fa-ellipsis-v"></i>
+          </button>
+          <div aria-labelledby="closeCard2" class="dropdown-menu dropdown-menu-right has-shadow">
+          <a class="dropdown-item remove"><i class="fa fa-times"></i>Close</a>
+          <a class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a>
+          </div>
+          </div>
+          </div>
+      
+          <div class="card-body text-center">
+          <div class="client-avatar"><img src="img/avatar-2.jpg" alt="..." class="img-fluid rounded-circle">
+          <div class="status bg-green"></div>
+          </div>
+          <div class="client-title">
+          <h3>Nguyen Van A</h3>
+          <h3>GCH 1733</h3>
+          <a href="#">Message</a>
+          </div>
+          <br>
+          <div><p class="text-danger">Last Signin: 20/04/2020</p></div>
+          <div><p class="text-danger">7 days no interact</p></div>
+          <div class="client-info">
+          <div class="row">
+          <div class="col-6"><strong>Mobile</strong><br><small>0381316371</small></div>
+          <div class="col-6"><strong>Gmail</strong><br><small>okela2@gpt.deu.vn</small></div>
+          </div>
+          
+          </div>
+          <div class="row d-flex justify-content-between">
+          <div class="col-6"><i class="fa fa-phone"></i></div>
+          <div class="col-6"><i class="fa fa-google-plus"></i></div>
+          </div>
+          </div>
+          </div>
           </div>
   
         <!-- Page Footer-->
