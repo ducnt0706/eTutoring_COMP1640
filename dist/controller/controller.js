@@ -160,6 +160,10 @@ function onMeetingSubmit(e) {
   }
 }
 
+// createNewMeeting("Nguyen Quan Ly", "lytruongfe@gmail.com", "Vinh Danh", "Ky vinh dnah Summer", "20/12/2020", "06:30 am", false,"nguyentrung@gmail.com", "nguyen trung Duc");
+// createNewMeeting("Nguyen Quan Ly", "lytruongfe@gmail.com", "Vinh Danh", "Ky vinh dnah Summer", "20/12/2020", "06:30 am", true,"nguyentrung@gmail.com", "Co be Dan Don");
+// createNewMeeting("Nguyen Quan Ly", "lytruongfe@gmail.com", "Vinh Danh", "Ky vinh dnah Summer", "20/12/2020", "06:30 am", true,"nguyentrung@gmail.com", "Co Be Xinh Xan");
+// createNewMeeting("Nguyen Quan Ly", "lytruongfe@gmail.com", "Vinh Danh", "Ky vinh dnah Summer", "20/12/2020", "06:30 am", false,"nguyentrung@gmail.com", "Co Be gia Tao");
 function createNewMeeting(tutorname, tutorgmail, title, content, date, time, status, studentgmail, studentname) {
   var meetingDoc = {
     studentgmail: studentgmail,
