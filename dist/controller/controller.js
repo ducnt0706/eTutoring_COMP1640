@@ -16,7 +16,7 @@ function signOut() {
 function initFirebaseAuth() {
   firebase.auth().onAuthStateChanged(user => {
     // Present tutor dashboard 
-    if (user != null && firebase.auth().currentUser.uid == "pxyo2cx3hIO3heXUsju15aN4hHG2") { // User is signed in!
+    if (user != null) { // User is signed in!
 
       // Get the signed-in user's profile pic and name.
       var profilePicUrl = getProfilePicUrl();
@@ -30,6 +30,9 @@ function initFirebaseAuth() {
       $('#user-name').text(userName);
       $('#user-avatar').attr('src', profilePicUrl);
 
+       // Region for contact
+      getContactByStudent(getGmail());
+      getMessByStudent(getGmail());
     } else {
       // User is signed out!
       $('#tutor-dashboard-page').hide();
@@ -76,50 +79,12 @@ function isTutorAccount(uId) {
 
 //------------------- End Handle Login! -------------------
 
-//======================== Handle student and tutor information- don't need in here==============
-
-// TODO 8: CREATE NEW document of student
-function createStudentInfo() {
-  //Note: If want to user auto ID just use doc();
-  firebase.firestore().collection('students').doc('AkK6ZIFjjnPP8VB40rKoKlYKOJi1').set({
-    name: "Duc Dap Chai",
-    mssv: "GCH1745",
-    moblie: "038147",
-    gmail: "abc@gmail.com"
-  }).then(() => {
-    console.log("Document successfully written!");
-  });
-}
-
-//TODO 9: CREATE NEW document of tutor info
-function createTutorInfo() {
-  //Note: If want to user auto ID just use doc();
-  // To update new property do the same with set({new property},{merge:true})
-  db.collection('tutors').doc('').set({
-    name: "Name of tutor",
-    gmail: "abc@gmail.com"
-  }).then(() => {
-    console.log(" Document of tutor successfully written!");
-  });
-}
-//======================== Handle student and tutor information- End!==============
 
 //============================================Handle contact=============
-// TODO 10: Create new contact 
-function createContact(tutorgmail, studentgmail) {
-  firebase.firestore().collection('tutorcontacts').doc(tutorgmail).collection('students').doc(studentgmail).set({
-    name: "Co be hat hay",
-    mssv: "GBH18362",
-    mobile: "0168266371",
-    gmail: "cobenhonhan124277@gmail.com"
-  }).then(() => {
-    console.log(" Contact Document successfully written!");
-  });
-}
 
-// TODO 11: get contact by student id 
-function getContactByStudent(studentid) {
-  firebase.firestore().collection('studentcontacts').doc(studentid).collection('tutor').get().then(function (querySnapshot) {
+// TODO 10: get contact by student id 
+function getContactByStudent(studentgmail) {
+  firebase.firestore().collection('studentcontacts').doc(studentgmail).collection('tutor').get().then(function (querySnapshot) {
     querySnapshot.forEach(function (doc) {
       // doc.data() is never undefined for query doc snapshots       
       // Render contact interface
@@ -129,7 +94,7 @@ function getContactByStudent(studentid) {
   });
 }
 
-// TODO 12: render contact interface
+// TODO 11: render contact interface
 function renderContact(doc) {
   var studentcontact =
     '<div class="col-lg-6 student-contact">' +
@@ -173,76 +138,76 @@ function renderContact(doc) {
 
 }
 
-// TODO 13: render list contact of messenger
+// TODO 12: render list contact of messenger
 function rendertutormessenger(doc) {
   var tutormessenger =
-  '<div class="item">' +
-    '<div class="feed d-flex justify-content-between">' +
-      '<div class="feed-body d-flex justify-content-between"><a href="#" class="feed-profile"><img src="img/avatar-2.jpg" alt="person" class="img-fluid rounded-circle"></a>' +
-        '<div class="content">' +
-          '<h5>' + doc.data().name + '</h5>' +
-        '</div>' +
+  '<div class="chat_list active_chat">' +
+    '<div class="chat_people">' +
+      '<div class="chat_img">' +
+        '<img class="img-fluid" alt="Anderson" src="img/avatar-2.jpg">' +
+      '</div>' +
+      '<div class="chat_ib">' +
+        '<h5>' + doc.data().name + '<span class="chat_date">5 hours ago</span>' + '</h5>' +
+        '<p>' + 'Lorem ipsum dolor sit amet consectetur adipisicing elit.' + '</p>' +
       '</div>' +
     '</div>' +
   '</div>';
   $('#tutor-mess-contact').append(tutormessenger);
 }
-//============================================ Handle contact End! =============
 
-//================================Handle meeting funtion==========================
-//TODO: Create new meeting
-function createNewMeeting(meetingid) {
-  var meetingDoc = {
-    studentgmail: "tuabc@gmail.com",
-    studentname: "Chu Cam Tu",
-    tutorname: "Nguyen Ngoc Han",
-    tutorgmail: "hannn@fpt.edu.vn",
-    title: "Thong bao ket hon",
-    content: "Thong bao vinh danh hoc sinh xuat ket voi chang trai song lam",
-    date: "25-04-2020",
-    time: "09:00 am",
-    status: true
+// TODO 13: Saves a new message to your Cloud Firestore database.
+function onMessSubmit(e) {
+  e.preventDefault();
+  var name = getUserName();
+  var studentgmail = getGmail();
+  var text = $('#inputmessage').val();
+  var profilePicUrl = getProfilePicUrl();
+  if (text != "") {
+    createNewMess(name, studentgmail, text, profilePicUrl);
   }
-  firebase.firestore().collection('meetings').doc(meetingid).set(meetingDoc).then(() => {
-    console.log("Meeting Document successfully written!");
+}
+
+function createNewMess(name, studentgmail, text, profilePicUrl) {
+  var messDoc = {
+    name: name,
+    studentgmail : studentgmail,
+    text: text,
+    profilePicUrl: profilePicUrl,
+    time: firebase.firestore.FieldValue.serverTimestamp()
+  }
+  firebase.firestore().collection('messenger').add(messDoc).then(() => {
+    console.log("Messenger Document successfully written!");
   })
 }
-// TODO: render meeting interface
-function renderMeeting(doc) {
-  var meetingItem =
-    '<div class="item">' +
-    '<div class="row">' +
-    '<div class="col-4 date-holder text-right ">' +
-    '<div id="tutor-meeting-status" class="icon"><i class="fa fa-check "></i></div>' +
-    '<div class="date">' +
-    '<h5>' + doc.data().time + '</h5>' +
-    '<h7 class="text-info">' + doc.data().date + '</h7>' +
-    '</div>' +
-    '</div>' +
-    '<div id="tutor-meeting-content" class="col-8 content">' +
-    '<h5>' + doc.data().title + '</h5>' +
-    '<p>' + doc.data().content + '</p>' +
-    '<p>' + doc.data().studentname + '<br>' + doc.data().studentgmail + '</p>' +
-    '</div>' +
-    '</div>' +
-    '</div>';
 
-  $('#tutor-meeting-box').append(meetingItem);
-  // Change status of meeting
-  if (doc.data().status == true) {
-    $('#tutor-meeting-status').attr("background-color", "#3cb371");
-  };
-};
-// TODO: present meeting interface from db
-function getMeetingByTutor(tutorgmail) {
-  firebase.firestore().collection('meetings').where("tutorgmail", "==", tutorgmail).limit(10).get().then(function (querySnapshot) {
+function renderMess(doc) {
+  var messItem =
+  '<div class="incoming_msg">' +
+    '<div class="incoming_msg_img">' +
+      '<img class="img-fluid" alt="Alexander" src="'+ doc.data().profilePicUrl + '">' +
+    '</div>' +
+    '<div class="received_msg">' +
+      '<div class="received_withd_msg">' +
+        '<p>' + doc.data().text + '</p>' +
+        '<span class="time_date">' + doc.data().time.toDate() + '</span>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
+  $('#messages-box').append(messItem);
+}
+
+function getMessByStudent(studentgmail) {
+  firebase.firestore().collection('messenger').where("studentgmail", "==", studentgmail).limit(10).get().then(function (querySnapshot) {
     querySnapshot.forEach(function (doc) {
-      renderMeeting(doc);
+      renderMess(doc);
     });
   });
 }
-//================================ End Handle meeting funtion !==========================
-//================================= Handle post function ========================
+
+
+//============================================ Handle contact End! =============
+
 function renderPost(doc){
 
 }
@@ -268,9 +233,8 @@ function tutorDashboardClick() {
   $('#tutor-messenger-card').hide();
 }
 function initialTutorDesign() {
-  getContactByStudent("hungtroy7c@gmail.com");
-  getMeetingByTutor("hannn@fpt.edu.vn");
   $('#tutor-contact-card').hide();
+  $('#tutor-messenger-card').hide();
 }
 function tutorMessengerClick() {
   $('#tutor-page-header').text("Messenger");
@@ -289,6 +253,10 @@ $('#sign-in').on('click', signIn);
 $('#btn-tutor-contact').on('click', tutorContactClick);
 $('#btn-tutor-dashboard').on('click', tutorDashboardClick);
 $('#btn-tutor-messenger').on('click', tutorMessengerClick);
+
+// when send messenger
+$('#submitmessenger').on('click',onMessSubmit);
+
 // Region for admin
 
 // Set up initial
