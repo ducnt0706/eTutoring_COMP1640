@@ -160,10 +160,10 @@ function onMeetingSubmit(e) {
   }
 }
 
-// createNewMeeting("Nguyen Quan Ly", "lytruongfe@gmail.com", "Vinh Danh", "Ky vinh dnah Summer", "20/12/2020", "06:30 am", false,"nguyentrung@gmail.com", "nguyen trung Duc");
-// createNewMeeting("Nguyen Quan Ly", "lytruongfe@gmail.com", "Vinh Danh", "Ky vinh dnah Summer", "20/12/2020", "06:30 am", true,"nguyentrung@gmail.com", "Co be Dan Don");
-// createNewMeeting("Nguyen Quan Ly", "lytruongfe@gmail.com", "Vinh Danh", "Ky vinh dnah Summer", "20/12/2020", "06:30 am", true,"nguyentrung@gmail.com", "Co Be Xinh Xan");
-// createNewMeeting("Nguyen Quan Ly", "lytruongfe@gmail.com", "Vinh Danh", "Ky vinh dnah Summer", "20/12/2020", "06:30 am", false,"nguyentrung@gmail.com", "Co Be gia Tao");
+//  createNewMeeting("Nguyen Quan Ly", "lytruongfe@gmail.com", "Vinh Danh", "Ky vinh dnah Summer", "20/12/2020", "06:30 am", false,"nguyentrung@gmail.com", "nguyen trung Duc");
+//  createNewMeeting("Nguyen Quan Ly", "lytruongfe@gmail.com", "Vinh Danh", "Ky vinh dnah Summer", "20/12/2020", "06:30 am", true,"nguyentrung@gmail.com", "Co be Dan Don");
+//  createNewMeeting("Nguyen Quan Ly", "lytruongfe@gmail.com", "Vinh Danh", "Ky vinh dnah Summer", "20/12/2020", "06:30 am", true,"nguyentrung@gmail.com", "Co Be Xinh Xan");
+//  createNewMeeting("Nguyen Quan Ly", "lytruongfe@gmail.com", "Vinh Danh", "Ky vinh dnah Summer", "20/12/2020", "06:30 am", false,"nguyentrung@gmail.com", "Co Be gia Tao");
 function createNewMeeting(tutorname, tutorgmail, title, content, date, time, status, studentgmail, studentname) {
   var meetingDoc = {
     studentgmail: studentgmail,
@@ -262,7 +262,10 @@ function onPostSubmit(e) {
 
   }
 }
-
+// createNewPost("ducntgch17377@fpt.edu.vn", "Nguyen Trung Duc","https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQ-jdZT_ZUNDydt9-YHiu3jkHqY8lgfBH8_CLGa4vA_xEGI-yMH&usqp=CAU", "file.com", "i'm feel lovely", 0);
+// createNewPost("ducntgch17377@fpt.edu.vn", "Nguyen Trung Duc","https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQIjBAM8ZkSwwcQMtI5RywtTRyPPEdQ4pTCBFt5OtkjxdSMs-PM&usqp=CAU", "file.com", "i'm feel smile", 0);
+// createNewPost("ducntgch17377@fpt.edu.vn", "Nguyen Trung Duc","https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQMSPxw2YZYvI8PYn2Jru5TjCRpBAPIlwahaJR3fuz2fUswJkd2&usqp=CAU", "file.com", "i'm feel funny", 0);
+//createNewPost("baby@fpt.edu.vn", "Nguyen Truc Xinh","https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQO67AEXOMiPnKqI-d0pw45VcrYxGUGIbUJZv-BFy11V9bgkqzh&usqp=CAU", "file.com", "i'm feel amzing", 0);
 function createNewPost(tutorgmail, tutorname, tutorPictureurl, imageUrl, content, loves, file) {
   var post = {
     tutorgmail: tutorgmail,
@@ -273,22 +276,22 @@ function createNewPost(tutorgmail, tutorname, tutorPictureurl, imageUrl, content
     time: firebase.firestore.FieldValue.serverTimestamp(),
     loves: loves
   };
-  firebase.firestore().collection('posts').add(post).then((postRef) => {
-    // Upload the image to cloud
-    var filePath = getUid() + '/' + postRef.id + '/' + file.name;
-    firebase.storage().ref(filePath).put(file).then((fileSnapshot) => {
-      // Generate a public URL for the file.
-      fileSnapshot.ref.getDownloadURL().then((url) => {
-        // Update the chat message placeholder with the image's URL.
-        postRef.update({
-          imageUrl: url,
-          storageUri: fileSnapshot.metadata.fullPath
-        });
-      });
-    })
-  }).catch(function (error) {
-    console.error('There was an error uploading a file to Cloud Storage:', error);
-  });
+  firebase.firestore().collection('posts').add(post);//.then((postRef) => {
+  //   // Upload the image to cloud
+  //   var filePath = getUid() + '/' + postRef.id + '/' + file.name;
+  //   firebase.storage().ref(filePath).put(file).then((fileSnapshot) => {
+  //     // Generate a public URL for the file.
+  //     fileSnapshot.ref.getDownloadURL().then((url) => {
+  //       // Update the chat message placeholder with the image's URL.
+  //       postRef.update({
+  //         imageUrl: url,
+  //         storageUri: fileSnapshot.metadata.fullPath
+  //       });
+  //     });
+  //   })
+  // }).catch(function (error) {
+  //   console.error('There was an error uploading a file to Cloud Storage:', error);
+  // });
 }
 
   function renderPost(doc) {
@@ -382,6 +385,6 @@ initialTutorDesign();
 // Region for tutor
 //createNewMeeting("meeting3");
 //createContact( "hannn@fpt.edu.vn","cobenhonhan@gmail.com");
-//createNewPost("mypost","hannn@fpt.edu.vn","Han Nguyen Ngoc","ancancanc.com","dlaaknckac.com","Hello World",69);
+// createNewPost("mypost","hannn@fpt.edu.vn","Han Nguyen Ngoc","fweggeer.com","dlaaknckac.com","Hello World",69);
 
 initFirebaseAuth(); 
