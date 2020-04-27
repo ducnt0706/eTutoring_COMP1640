@@ -14,31 +14,46 @@ function signOut() {
 
 // TODO 3: Initialize Firebase and Listen user state changes.
 function initFirebaseAuth() {
-  firebase.auth().onAuthStateChanged(user => {
-    // Present tutor dashboard 
-    if (user != null) { // User is signed in!
+  var listUid = []
+    firebase.firestore().collection('listStudent').get()
+    .then((docSnapshot)=>{
+      docSnapshot.forEach((doc)=>{
+        listUid.push(doc.data().uid)
+      })
+    }).
+    then(()=>{
+      firebase.auth().onAuthStateChanged(user => {
+        var time = new Date()
+        // Present tutor dashboard 
+        if (user != null && listUid.includes(firebase.auth().currentUser.uid)) { // User is signed in!
+    
+          // Get the signed-in user's profile pic and name.
+          var profilePicUrl = getProfilePicUrl();
+          var userName = getUserName();
+    
+          // Set the user's profile pic and name.
+          $('#tutor-dashboard-page').show();
+          $('#login-page').hide();
+    
+          // Show user's profile and sign-out button.
+          $('#user-name').text(userName);
+          $('#user-avatar').attr('src', profilePicUrl);
+        
+          
+    
+        } else {
+          // User is signed out!
+          $('#tutor-dashboard-page').hide();
+          $('#login-page').show();
+        }
+      }
+      
+      );
+    })
 
-      // Get the signed-in user's profile pic and name.
-      var profilePicUrl = getProfilePicUrl();
-      var userName = getUserName();
+    console.log('my arrays',listUid)
 
-      // Set the user's profile pic and name.
-      $('#tutor-dashboard-page').show();
-      $('#login-page').hide();
-
-      // Show user's profile and sign-out button.
-      $('#user-name').text(userName);
-      $('#user-avatar').attr('src', profilePicUrl);
-
-       // Region for contact
-      getContactByStudent(getGmail());
-      getMessByStudent(getGmail());
-    } else {
-      // User is signed out!
-      $('#tutor-dashboard-page').hide();
-      $('#login-page').show();
-    }
-  });
+  
 }
 
 // TODO 4: Return the user's profile pic URL.
@@ -263,7 +278,6 @@ $('#submitmessenger').on('click',onMessSubmit);
 
 // Listen user state changes
 initFirebaseAuth();
-
 
 initialTutorDesign();
 // Region for tutor
