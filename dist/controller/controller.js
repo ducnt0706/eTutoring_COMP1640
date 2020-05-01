@@ -25,7 +25,7 @@ function initFirebaseAuth() {
       firebase.auth().onAuthStateChanged(user => {
         var time = new Date()
         // Present tutor dashboard 
-        if (user != null && listUid.includes(firebase.auth().currentUser.uid)) { // User is signed in!
+        if (user != null ) { // User is signed in!
     
           // Get the signed-in user's profile pic and name.
           var profilePicUrl = getProfilePicUrl();
